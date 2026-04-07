@@ -512,6 +512,10 @@
 <script>
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzjrobTSm4fptBQl4Ie4HtfDPu3KLugyjn5qGfWJ2HrjEf_rY1_Vh4cbcM44ljrJIlr/exec';
 
+// 從網址讀取場次代碼
+const urlParams = new URLSearchParams(window.location.search);
+const SESSION_ID = urlParams.get('session') || 'default';
+
 // ===== 全部題目 =====
 const allQuestions = [
   // 畫面1：衣櫃健檢 (index 0-4)
@@ -671,6 +675,7 @@ async function submitAnswer() {
       body: JSON.stringify({
         type: 'answer',
         studentId,
+        session: SESSION_ID,
         questionId: q.id,
         questionIndex: currentQ,
         answer: answerText,
@@ -697,7 +702,7 @@ function startWaitingPoll() {
 
 async function checkNextQuestion() {
   try {
-    const res = await fetch(`${APPS_SCRIPT_URL}?type=status`);
+    const res = await fetch(`${APPS_SCRIPT_URL}?type=status&session=${SESSION_ID}`);
     const data = await res.json();
 
     if (data.currentQuestion > currentQ) {
@@ -803,7 +808,7 @@ function showResult() {
 function startRespondentPoll() {
   respondentPollInterval = setInterval(async () => {
     try {
-      const res = await fetch(`${APPS_SCRIPT_URL}?type=respondents`);
+      const res = await fetch(`${APPS_SCRIPT_URL}?type=respondents&session=${SESSION_ID}`);
       const data = await res.json();
       document.getElementById('respondentCount').textContent = data.count || 0;
     } catch(e) {}

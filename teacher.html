@@ -436,18 +436,42 @@
       <div class="badge count-badge">
         <span class="num" id="totalCount">0</span> 人填答
       </div>
+      <div class="badge" id="sessionBadge" style="border-color:rgba(77,255,180,0.4); color:var(--accent3); display:none;">
+        場次：<strong id="sessionDisplay">—</strong>
+      </div>
     </div>
   </div>
   <div class="header-right">
-    <button class="btn btn-reset" onclick="resetAll()">⚠ 重置資料</button>
     <button class="btn btn-refresh" onclick="manualRefresh()">
       <span>↻</span> 手動刷新
+    </button>
+    <button class="btn" onclick="showNewSession()" style="background:var(--card); border:1px solid rgba(77,255,180,0.4); color:var(--accent3);">
+      ＋ 新場次
     </button>
     <button class="btn btn-next" id="btnNextQ" onclick="openNextQuestion()">
       開放下一題 →
     </button>
   </div>
 </header>
+
+<!-- 新場次 Modal -->
+<div id="sessionModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:999; align-items:center; justify-content:center;">
+  <div style="background:var(--card); border:1px solid var(--border); border-radius:20px; padding:36px 40px; width:100%; max-width:420px; text-align:center;">
+    <div style="font-size:36px; margin-bottom:16px;">🆕</div>
+    <div style="font-size:20px; font-weight:900; margin-bottom:8px;">建立新場次</div>
+    <div style="font-size:13px; color:var(--muted); margin-bottom:24px; line-height:1.6;">
+      建立後會產生新的學生端 QR Code<br>舊場次資料自動保留，不會被刪除
+    </div>
+    <div style="background:var(--surface); border-radius:12px; padding:16px; margin-bottom:24px;">
+      <div style="font-size:12px; color:var(--muted); margin-bottom:6px;">新場次代碼</div>
+      <div style="font-size:28px; font-weight:900; color:var(--accent); letter-spacing:3px;" id="newSessionCode">—</div>
+    </div>
+    <div style="display:flex; gap:10px;">
+      <button onclick="hideSessionModal()" style="flex:1; padding:14px; background:var(--border); border:none; border-radius:12px; color:var(--muted); font-size:14px; font-weight:700; cursor:pointer; font-family:inherit;">取消</button>
+      <button onclick="confirmNewSession()" style="flex:2; padding:14px; background:var(--accent); border:none; border-radius:12px; color:#000; font-size:14px; font-weight:900; cursor:pointer; font-family:inherit;">確認開始新場次 →</button>
+    </div>
+  </div>
+</div>
 
 <main>
   <!-- 圖表區 -->
@@ -501,8 +525,10 @@
     <span>老師控制台</span>
     <span>｜</span>
     <span>目前題目：<strong id="footerQ">Q1</strong></span>
+    <span>｜</span>
+    <span>場次：<strong id="footerSession" style="color:var(--accent3)">尚未建立</strong></span>
   </div>
-  <div>學生掃 QR Code 進入學生端填答</div>
+  <div id="footerQR" style="font-size:12px; color:var(--muted);">請先建立場次以產生學生端連結</div>
 </footer>
 
 <script>
@@ -510,6 +536,69 @@
 // 設定區：請填入你的 Apps Script 網址
 // ==========================================
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzjrobTSm4fptBQl4Ie4HtfDPu3KLugyjn5qGfWJ2HrjEf_rY1_Vh4cbcM44ljrJIlr/exec';
+
+// ==========================================
+// 場次管理
+let currentSession = localStorage.getItem('currentSession') || null;
+let pendingSession = null;
+
+function generateSessionCode() {
+  const now = new Date();
+  const date = now.toISOString().slice(0,10).replace(/-/g,'');
+  const rand = Math.floor(Math.random()*900+100);
+  return `${date}-${rand}`;
+}
+
+function showNewSession() {
+  pendingSession = generateSessionCode();
+  document.getElementById('newSessionCode').textContent = pendingSession;
+  document.getElementById('sessionModal').style.display = 'flex';
+}
+
+function hideSessionModal() {
+  document.getElementById('sessionModal').style.display = 'none';
+  pendingSession = null;
+}
+
+async function confirmNewSession() {
+  currentSession = pendingSession;
+  localStorage.setItem('currentSession', currentSession);
+  hideSessionModal();
+
+  // 通知 Apps Script 新場次
+  try {
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type: 'newSession',
+        session: currentSession
+      })
+    });
+  } catch(e) {}
+
+  currentQ = 0;
+  updateSessionUI();
+  viewQuestion(0);
+}
+
+function updateSessionUI() {
+  if (!currentSession) return;
+
+  // header badge
+  document.getElementById('sessionDisplay').textContent = currentSession;
+  document.getElementById('sessionBadge').style.display = 'flex';
+
+  // footer
+  document.getElementById('footerSession').textContent = currentSession;
+
+  // 產生學生端連結
+  const baseUrl = window.location.href.replace('teacher.html', 'student.html');
+  const studentUrl = `${baseUrl}?session=${currentSession}`;
+  document.getElementById('footerQR').innerHTML =
+    `學生端連結：<a href="${studentUrl}" target="_blank" style="color:var(--accent3);">${studentUrl}</a>`;
+}
 
 // ==========================================
 const questions = [
@@ -538,6 +627,7 @@ const COLORS_DARK = ['rgba(232,255,77,0.15)', 'rgba(77,255,180,0.15)', 'rgba(255
 window.onload = () => {
   renderQList();
   initChart();
+  if (currentSession) updateSessionUI();
   fetchData();
   startAutoRefresh();
 };
@@ -629,7 +719,8 @@ async function fetchData() {
   spinner.classList.add('active');
 
   try {
-    const res = await fetch(`${APPS_SCRIPT_URL}?type=stats&q=${currentQ}`);
+    const sessionParam = currentSession ? `&session=${currentSession}` : '';
+    const res = await fetch(`${APPS_SCRIPT_URL}?type=stats&q=${currentQ}${sessionParam}`);
     const data = await res.json();
 
     updateChart(data.counts || [0,0,0,0]);
@@ -715,9 +806,7 @@ function viewQuestion(idx) {
 
 async function openNextQuestion() {
   if (currentQ >= questions.length - 1) return;
-
   const nextQ = currentQ + 1;
-
   try {
     await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
@@ -725,32 +814,15 @@ async function openNextQuestion() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         type: 'setQuestion',
-        questionIndex: nextQ
+        questionIndex: nextQ,
+        session: currentSession
       })
     });
-  } catch(e) {
-    console.log('設定失敗');
-  }
-
+  } catch(e) {}
   viewQuestion(nextQ);
 }
 
-async function resetAll() {
-  if (!confirm('確定要重置所有資料嗎？這個動作無法復原。')) return;
-  try {
-    await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: 'reset' })
-    });
-    currentQ = 0;
-    viewQuestion(0);
-    alert('已重置');
-  } catch(e) {
-    console.log('重置失敗');
-  }
-}
+// 場次機制取代reset，不再需要手動重置
 </script>
 </body>
 </html>
