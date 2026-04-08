@@ -6,427 +6,174 @@
 <title>快時尚健檢</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap');
-
   :root {
-    --bg: #0a0a0f;
-    --surface: #13131a;
-    --card: #1c1c26;
-    --accent: #e8ff4d;
-    --accent2: #ff6b35;
-    --accent3: #4dffb4;
-    --text: #f0f0f0;
-    --muted: #666680;
-    --border: #2a2a3a;
+    --bg:#0a0a0f; --surface:#13131a; --card:#1c1c26;
+    --accent:#e8ff4d; --accent2:#ff6b35; --accent3:#4dffb4;
+    --text:#f0f0f0; --muted:#666680; --border:#2a2a3a;
   }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Noto Sans TC',sans-serif;
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;padding:24px;}
+  body::before{content:'';position:fixed;inset:0;
+    background:radial-gradient(ellipse 80% 50% at 20% 20%,rgba(232,255,77,0.04) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%,rgba(255,107,53,0.04) 0%,transparent 60%);
+    pointer-events:none;}
+  .progress-bar{position:fixed;top:0;left:0;height:4px;
+    background:linear-gradient(90deg,var(--accent),var(--accent3));
+    transition:width 0.6s cubic-bezier(0.4,0,0.2,1);z-index:100;
+    box-shadow:0 0 12px var(--accent);}
+  .top-info{position:fixed;top:16px;right:20px;z-index:99;}
+  .respondents-badge{background:var(--surface);border:1px solid var(--border);
+    border-radius:20px;padding:6px 14px;font-size:12px;color:var(--muted);
+    display:flex;align-items:center;gap:6px;}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--accent3);animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+  @keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  /* ===== 開場 ===== */
+  #screen-intro{text-align:center;max-width:460px;animation:slideUp 0.6s ease;}
+  .intro-emoji{font-size:60px;display:block;margin-bottom:20px;animation:float 3s ease-in-out infinite;}
+  .intro-title{font-size:clamp(26px,7vw,38px);font-weight:900;line-height:1.2;margin-bottom:14px;}
+  .intro-title span{color:var(--accent);}
+  .intro-sub{font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:28px;}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Noto Sans TC', sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-  }
+  /* ===== 身份填寫 ===== */
+  .identity-card{width:100%;max-width:460px;background:var(--card);
+    border:1px solid var(--border);border-radius:24px;padding:32px 28px;
+    margin-top:16px;animation:slideUp 0.5s ease;}
+  .identity-title{font-size:14px;font-weight:700;color:var(--muted);
+    letter-spacing:2px;margin-bottom:20px;text-align:center;}
+  .field-group{display:flex;flex-direction:column;gap:12px;margin-bottom:24px;}
+  .field-row{display:flex;gap:10px;}
+  .field-wrap{display:flex;flex-direction:column;gap:6px;flex:1;}
+  .field-label{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:1px;}
+  .field-input{background:var(--surface);border:2px solid var(--border);
+    border-radius:12px;padding:12px 14px;color:var(--text);font-size:15px;
+    font-family:'Noto Sans TC',sans-serif;outline:none;transition:border-color 0.2s;width:100%;}
+  .field-input:focus{border-color:var(--accent);}
+  .field-input::placeholder{color:var(--muted);}
 
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 80% 50% at 20% 20%, rgba(232,255,77,0.04) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(255,107,53,0.04) 0%, transparent 60%);
-    pointer-events: none;
-  }
+  /* ===== 共用按鈕 ===== */
+  .btn-main{width:100%;padding:16px;background:var(--accent);color:#000;border:none;
+    border-radius:14px;font-size:15px;font-weight:900;cursor:pointer;
+    transition:all 0.2s;font-family:'Noto Sans TC',sans-serif;letter-spacing:1px;}
+  .btn-main:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,255,77,0.3);}
+  .btn-main:disabled{background:var(--border);color:var(--muted);cursor:not-allowed;
+    transform:none;box-shadow:none;}
+  .btn-green{background:var(--accent3);color:#000;}
+  .btn-green:hover{box-shadow:0 8px 24px rgba(77,255,180,0.3);}
 
-  /* 進度條 */
-  .progress-bar {
-    position: fixed;
-    top: 0; left: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--accent), var(--accent3));
-    transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
-    z-index: 100;
-    box-shadow: 0 0 12px var(--accent);
-  }
+  /* ===== 區段標題 ===== */
+  .section-banner{width:100%;max-width:520px;text-align:center;margin-bottom:20px;}
+  .section-tag{display:inline-block;background:rgba(232,255,77,0.12);
+    border:1px solid rgba(232,255,77,0.3);color:var(--accent);font-size:11px;
+    font-weight:700;letter-spacing:2px;padding:4px 14px;border-radius:20px;margin-bottom:8px;}
+  .section-title-text{font-size:15px;color:var(--muted);}
 
-  /* 頂部人數 */
-  .top-info {
-    position: fixed;
-    top: 16px; right: 20px;
-    z-index: 99;
-  }
+  /* ===== 題目卡片 ===== */
+  .card{width:100%;max-width:520px;background:var(--card);border:1px solid var(--border);
+    border-radius:24px;padding:36px 32px;position:relative;}
+  .card-anim{animation:slideUp 0.4s cubic-bezier(0.4,0,0.2,1);}
+  .q-label{display:flex;align-items:center;gap:8px;margin-bottom:16px;}
+  .q-num{background:var(--accent);color:#000;font-weight:900;font-size:11px;
+    padding:3px 10px;border-radius:20px;letter-spacing:1px;}
+  .q-num.blue{background:var(--accent3);}
+  .q-section-label{color:var(--muted);font-size:11px;letter-spacing:1px;}
+  .question{font-size:clamp(18px,5vw,24px);font-weight:900;line-height:1.4;
+    margin-bottom:28px;color:var(--text);}
+  .options{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
+  .option{background:var(--surface);border:2px solid var(--border);border-radius:14px;
+    padding:14px 18px;cursor:pointer;display:flex;align-items:center;gap:12px;
+    transition:all 0.2s;}
+  .option:hover{border-color:var(--accent);transform:translateX(3px);}
+  .option.selected{border-color:var(--accent);background:rgba(232,255,77,0.07);}
+  .option-letter{width:30px;height:30px;border-radius:8px;background:var(--border);
+    display:flex;align-items:center;justify-content:center;font-weight:700;
+    font-size:12px;color:var(--muted);flex-shrink:0;transition:all 0.2s;}
+  .option.selected .option-letter{background:var(--accent);color:#000;}
+  .option-text{font-size:14px;font-weight:500;color:var(--text);}
 
-  .respondents-badge {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 6px 14px;
-    font-size: 12px;
-    color: var(--muted);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
+  /* ===== 等待 ===== */
+  .waiting-block{display:none;text-align:center;padding:16px 0 8px;}
+  .waiting-block.show{display:block;}
+  .waiting-icon{font-size:40px;margin-bottom:12px;animation:float 3s ease-in-out infinite;}
+  .waiting-title{font-size:17px;font-weight:900;color:var(--accent);margin-bottom:6px;}
+  .waiting-sub{font-size:13px;color:var(--muted);line-height:1.6;}
+  .dots{display:inline-flex;gap:5px;margin-top:14px;}
+  .dots span{width:7px;height:7px;border-radius:50%;background:var(--muted);
+    animation:db 1.4s ease-in-out infinite;}
+  .dots span:nth-child(2){animation-delay:0.2s;}
+  .dots span:nth-child(3){animation-delay:0.4s;}
+  @keyframes db{0%,80%,100%{transform:translateY(0);opacity:0.3}40%{transform:translateY(-6px);opacity:1}}
 
-  .dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--accent3);
-    animation: pulse 2s infinite;
-  }
+  /* ===== 步驟點 ===== */
+  .step-dots{display:flex;justify-content:center;gap:6px;margin-bottom:20px;}
+  .step-dot{width:7px;height:7px;border-radius:50%;background:var(--border);transition:all 0.3s;}
+  .step-dot.active{background:var(--accent);width:20px;border-radius:4px;}
+  .step-dot.done{background:rgba(232,255,77,0.35);}
+  .step-dot.active.blue{background:var(--accent3);}
 
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
+  /* ===== 送出反饋 ===== */
+  .submit-feedback{position:fixed;inset:0;display:flex;align-items:center;
+    justify-content:center;background:rgba(0,0,0,0.75);z-index:200;
+    opacity:0;pointer-events:none;transition:opacity 0.3s;}
+  .submit-feedback.show{opacity:1;pointer-events:auto;}
+  .sf-inner{background:var(--card);border:2px solid var(--accent);border-radius:20px;
+    padding:28px 36px;text-align:center;transform:scale(0.85);
+    transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);}
+  .submit-feedback.show .sf-inner{transform:scale(1);}
+  .sf-icon{font-size:36px;margin-bottom:10px;}
+  .sf-text{font-weight:700;font-size:15px;color:var(--accent);}
 
-  /* 區段標題 */
-  .section-banner {
-    width: 100%;
-    max-width: 520px;
-    text-align: center;
-    margin-bottom: 20px;
-    animation: slideUp 0.5s ease;
-  }
+  /* ===== 過渡畫面 ===== */
+  #screen-transition{display:none;text-align:center;max-width:460px;}
+  .trans-emoji{font-size:52px;margin-bottom:16px;animation:float 3s ease-in-out infinite;}
+  .trans-title{font-size:22px;font-weight:900;color:var(--accent);margin-bottom:10px;}
+  .trans-sub{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:28px;}
 
-  .section-tag {
-    display: inline-block;
-    background: rgba(232,255,77,0.12);
-    border: 1px solid rgba(232,255,77,0.3);
-    color: var(--accent);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    padding: 4px 14px;
-    border-radius: 20px;
-    margin-bottom: 8px;
-  }
+  /* ===== 結果 ===== */
+  #screen-result{display:none;width:100%;max-width:520px;}
+  .result-card{background:var(--card);border:1px solid var(--border);border-radius:24px;
+    padding:36px 32px;text-align:center;position:relative;overflow:hidden;}
+  .result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;}
+  .result-card.level-0::before{background:linear-gradient(90deg,#4dffb4,#00cc88);}
+  .result-card.level-1::before{background:linear-gradient(90deg,#e8ff4d,#ccdd00);}
+  .result-card.level-2::before{background:linear-gradient(90deg,#ff9f35,#ff6b35);}
+  .result-card.level-3::before{background:linear-gradient(90deg,#ff4444,#cc0000);}
+  .result-emoji{font-size:64px;margin-bottom:16px;display:block;}
+  .result-level{font-size:13px;font-weight:700;letter-spacing:2px;color:var(--muted);margin-bottom:8px;}
+  .result-title{font-size:26px;font-weight:900;margin-bottom:20px;}
+  .result-title.level-0{color:var(--accent3);}
+  .result-title.level-1{color:var(--accent);}
+  .result-title.level-2{color:#ff9f35;}
+  .result-title.level-3{color:#ff5555;}
+  .index-display{background:var(--surface);border:1px solid var(--border);
+    border-radius:16px;padding:20px;margin-bottom:20px;}
+  .index-number{font-size:56px;font-weight:900;line-height:1;margin-bottom:4px;}
+  .index-label{font-size:12px;color:var(--muted);}
+  .water-alert{background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.3);
+    border-radius:14px;padding:16px 20px;margin-bottom:20px;display:none;}
+  .water-alert.show{display:block;}
+  .water-alert-num{font-size:22px;font-weight:900;color:#ff9f35;margin-bottom:4px;}
+  .water-alert-label{font-size:12px;color:var(--muted);}
+  .result-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px;
+    text-align:left;background:var(--surface);border-radius:12px;padding:16px 18px;}
+  .result-desc strong{color:var(--text);}
+  .divider{height:1px;background:var(--border);margin:20px 0;}
+  .done-hint{font-size:13px;color:var(--muted);line-height:1.6;}
+  .done-hint span{color:var(--accent);font-weight:700;}
 
-  .section-title {
-    font-size: 15px;
-    color: var(--muted);
-  }
-
-  /* 主卡片 */
-  .card {
-    width: 100%;
-    max-width: 520px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    padding: 36px 32px;
-    position: relative;
-  }
-
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .card-anim {
-    animation: slideUp 0.4s cubic-bezier(0.4,0,0.2,1);
-  }
-
-  /* 題號 */
-  .q-label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-
-  .q-num {
-    background: var(--accent);
-    color: #000;
-    font-weight: 900;
-    font-size: 11px;
-    padding: 3px 10px;
-    border-radius: 20px;
-    letter-spacing: 1px;
-  }
-
-  .q-num.blue { background: var(--accent3); }
-
-  .q-section {
-    color: var(--muted);
-    font-size: 11px;
-    letter-spacing: 1px;
-  }
-
-  /* 題目 */
-  .question {
-    font-size: clamp(18px, 5vw, 24px);
-    font-weight: 900;
-    line-height: 1.4;
-    margin-bottom: 28px;
-    color: var(--text);
-  }
-
-  /* 選項 */
-  .options {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 28px;
-  }
-
-  .option {
-    background: var(--surface);
-    border: 2px solid var(--border);
-    border-radius: 14px;
-    padding: 14px 18px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    transition: all 0.2s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .option:hover { border-color: var(--accent); transform: translateX(3px); }
-  .option.selected { border-color: var(--accent); background: rgba(232,255,77,0.07); }
-
-  .option-letter {
-    width: 30px; height: 30px;
-    border-radius: 8px;
-    background: var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 12px;
-    color: var(--muted);
-    flex-shrink: 0;
-    transition: all 0.2s;
-  }
-
-  .option.selected .option-letter { background: var(--accent); color: #000; }
-
-  .option-text { font-size: 14px; font-weight: 500; color: var(--text); }
-
-  /* 按鈕 */
-  .btn-submit {
-    width: 100%;
-    padding: 16px;
-    background: var(--accent);
-    color: #000;
-    border: none;
-    border-radius: 14px;
-    font-size: 15px;
-    font-weight: 900;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: 'Noto Sans TC', sans-serif;
-    letter-spacing: 1px;
-  }
-
-  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(232,255,77,0.3); }
-  .btn-submit:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; transform: none; box-shadow: none; }
-
-  /* 等待 */
-  .waiting-block {
-    display: none;
-    text-align: center;
-    padding: 16px 0 8px;
-  }
-  .waiting-block.show { display: block; }
-
-  .waiting-icon { font-size: 40px; margin-bottom: 12px; animation: float 3s ease-in-out infinite; }
-  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
-
-  .waiting-title { font-size: 17px; font-weight: 900; color: var(--accent); margin-bottom: 6px; }
-  .waiting-sub { font-size: 13px; color: var(--muted); line-height: 1.6; }
-
-  .dots { display: inline-flex; gap: 5px; margin-top: 14px; }
-  .dots span { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); animation: db 1.4s ease-in-out infinite; }
-  .dots span:nth-child(2) { animation-delay: 0.2s; }
-  .dots span:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes db { 0%,80%,100%{transform:translateY(0);opacity:0.3} 40%{transform:translateY(-6px);opacity:1} }
-
-  /* 步驟點 */
-  .step-dots {
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-    margin-bottom: 20px;
-  }
-
-  .step-dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: var(--border);
-    transition: all 0.3s;
-  }
-
-  .step-dot.active { background: var(--accent); width: 20px; border-radius: 4px; }
-  .step-dot.done { background: rgba(232,255,77,0.35); }
-  .step-dot.active.blue { background: var(--accent3); }
-
-  /* 送出反饋overlay */
-  .submit-feedback {
-    position: fixed; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-    background: rgba(0,0,0,0.75);
-    z-index: 200;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.3s;
-  }
-  .submit-feedback.show { opacity: 1; pointer-events: auto; }
-
-  .sf-inner {
-    background: var(--card);
-    border: 2px solid var(--accent);
-    border-radius: 20px;
-    padding: 28px 36px;
-    text-align: center;
-    transform: scale(0.85);
-    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-  }
-  .submit-feedback.show .sf-inner { transform: scale(1); }
-  .sf-icon { font-size: 36px; margin-bottom: 10px; }
-  .sf-text { font-weight: 700; font-size: 15px; color: var(--accent); }
-
-  /* 開場 */
-  #screen-intro {
-    text-align: center;
-    max-width: 460px;
-    animation: slideUp 0.6s ease;
-  }
-
-  .intro-emoji { font-size: 60px; display: block; margin-bottom: 20px; animation: float 3s ease-in-out infinite; }
-  .intro-title { font-size: clamp(26px, 7vw, 38px); font-weight: 900; line-height: 1.2; margin-bottom: 14px; }
-  .intro-title span { color: var(--accent); }
-  .intro-sub { font-size: 14px; color: var(--muted); line-height: 1.8; margin-bottom: 32px; }
-
-  .btn-start {
-    background: var(--accent);
-    color: #000;
-    border: none;
-    border-radius: 14px;
-    padding: 16px 36px;
-    font-size: 16px;
-    font-weight: 900;
-    cursor: pointer;
-    font-family: 'Noto Sans TC', sans-serif;
-    transition: all 0.2s;
-    letter-spacing: 1px;
-  }
-  .btn-start:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(232,255,77,0.35); }
-
-  /* 過渡畫面：畫面1→2 */
-  #screen-transition {
-    display: none;
-    text-align: center;
-    max-width: 460px;
-    animation: slideUp 0.5s ease;
-  }
-
-  .trans-emoji { font-size: 52px; margin-bottom: 16px; animation: float 3s ease-in-out infinite; }
-  .trans-title { font-size: 22px; font-weight: 900; color: var(--accent); margin-bottom: 10px; }
-  .trans-sub { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 28px; }
-
-  /* 指數結果畫面 */
-  #screen-result {
-    display: none;
-    width: 100%;
-    max-width: 520px;
-    animation: slideUp 0.6s ease;
-  }
-
-  .result-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    padding: 36px 32px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .result-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 4px;
-  }
-
-  .result-card.level-0::before { background: linear-gradient(90deg, #4dffb4, #00cc88); }
-  .result-card.level-1::before { background: linear-gradient(90deg, #e8ff4d, #ccdd00); }
-  .result-card.level-2::before { background: linear-gradient(90deg, #ff9f35, #ff6b35); }
-  .result-card.level-3::before { background: linear-gradient(90deg, #ff4444, #cc0000); }
-
-  .result-emoji { font-size: 64px; margin-bottom: 16px; display: block; }
-  .result-level { font-size: 13px; font-weight: 700; letter-spacing: 2px; color: var(--muted); margin-bottom: 8px; }
-  .result-title { font-size: 26px; font-weight: 900; margin-bottom: 20px; }
-  .result-title.level-0 { color: var(--accent3); }
-  .result-title.level-1 { color: var(--accent); }
-  .result-title.level-2 { color: #ff9f35; }
-  .result-title.level-3 { color: #ff5555; }
-
-  /* 指數大數字 */
-  .index-display {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 20px;
-  }
-
-  .index-number {
-    font-size: 56px;
-    font-weight: 900;
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-
-  .index-label { font-size: 12px; color: var(--muted); }
-
-  /* 水資源警示 */
-  .water-alert {
-    background: rgba(255,107,53,0.08);
-    border: 1px solid rgba(255,107,53,0.3);
-    border-radius: 14px;
-    padding: 16px 20px;
-    margin-bottom: 20px;
-    display: none;
-  }
-
-  .water-alert.show { display: block; }
-  .water-alert-num { font-size: 22px; font-weight: 900; color: #ff9f35; margin-bottom: 4px; }
-  .water-alert-label { font-size: 12px; color: var(--muted); }
-
-  /* 說明文字 */
-  .result-desc {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.7;
-    margin-bottom: 20px;
-    text-align: left;
-    background: var(--surface);
-    border-radius: 12px;
-    padding: 16px 18px;
-  }
-
-  .result-desc strong { color: var(--text); }
-
-  /* 分隔區塊 */
-  .divider {
-    height: 1px;
-    background: var(--border);
-    margin: 20px 0;
-  }
-
-  .done-hint { font-size: 13px; color: var(--muted); line-height: 1.6; }
-  .done-hint span { color: var(--accent); font-weight: 700; }
+  /* 身份標籤（結果頁顯示） */
+  .identity-badge{display:inline-flex;align-items:center;gap:8px;
+    background:var(--surface);border:1px solid var(--border);border-radius:20px;
+    padding:6px 14px;font-size:13px;margin-bottom:20px;}
 </style>
 </head>
 <body>
 
 <div class="progress-bar" id="progressBar" style="width:0%"></div>
-
 <div class="top-info">
   <div class="respondents-badge">
     <span class="dot"></span>
@@ -434,7 +181,6 @@
   </div>
 </div>
 
-<!-- 送出反饋 -->
 <div class="submit-feedback" id="submitFeedback">
   <div class="sf-inner">
     <div class="sf-icon">✅</div>
@@ -446,35 +192,51 @@
 <div id="screen-intro">
   <span class="intro-emoji">👕</span>
   <h1 class="intro-title">你的衣櫃，<br><span>比你想的更貴</span></h1>
-  <p class="intro-sub">11個問題<br>帶你算出自己的<strong style="color:var(--text)">快時尚指數</strong><br>看看你的衣服消耗了多少地球資源</p>
-  <button class="btn-start" onclick="startQuiz()">開始健檢 →</button>
+  <p class="intro-sub">先填寫你的資料<br>再開始 11 題快時尚健檢</p>
+
+  <div class="identity-card">
+    <div class="identity-title">填寫身份資料</div>
+    <div class="field-group">
+      <div class="field-wrap">
+        <div class="field-label">班級</div>
+        <input class="field-input" id="inputClass" type="text" placeholder="例：803" maxlength="10">
+      </div>
+      <div class="field-row">
+        <div class="field-wrap">
+          <div class="field-label">座號</div>
+          <input class="field-input" id="inputSeat" type="text" placeholder="例：12" maxlength="4">
+        </div>
+        <div class="field-wrap" style="flex:2">
+          <div class="field-label">姓名</div>
+          <input class="field-input" id="inputName" type="text" placeholder="你的姓名" maxlength="10">
+        </div>
+      </div>
+    </div>
+    <button class="btn-main" id="btnStart" onclick="startQuiz()" disabled>開始健檢 →</button>
+  </div>
 </div>
 
 <!-- ===== 題目區 ===== -->
-<div id="screen-quiz" style="display:none; width:100%; max-width:520px;">
+<div id="screen-quiz" style="display:none;width:100%;max-width:520px;">
   <div class="section-banner" id="sectionBanner">
     <div class="section-tag" id="sectionTag">第一關</div>
-    <div class="section-title" id="sectionTitle">衣櫃健檢</div>
+    <div class="section-title-text" id="sectionTitleText">衣櫃健檢</div>
   </div>
-
   <div class="step-dots" id="stepDots"></div>
-
   <div class="card card-anim" id="questionCard">
     <div class="q-label">
       <span class="q-num" id="qNum">Q1</span>
-      <span class="q-section" id="qSection">衣櫃健檢</span>
+      <span class="q-section-label" id="qSectionLabel">衣櫃健檢</span>
     </div>
     <div class="question" id="questionText"></div>
     <div class="options" id="optionsContainer"></div>
-
     <div class="waiting-block" id="waitingBlock">
       <div class="waiting-icon">⏳</div>
       <div class="waiting-title">已收到你的答案！</div>
       <div class="waiting-sub">等老師開放下一題<br>一起看看全班的結果</div>
       <div class="dots"><span></span><span></span><span></span></div>
     </div>
-
-    <button class="btn-submit" id="btnSubmit" onclick="submitAnswer()" disabled>確認送出 →</button>
+    <button class="btn-main" id="btnSubmit" onclick="submitAnswer()" disabled>確認送出 →</button>
   </div>
 </div>
 
@@ -483,27 +245,25 @@
   <div class="trans-emoji">🎯</div>
   <div class="trans-title">衣櫃健檢完成！</div>
   <div class="trans-sub">接下來看看你的<strong style="color:var(--text)">消費習慣</strong><br>一起找出快時尚的影響</div>
-  <button class="btn-start" onclick="startSection2()" style="background:var(--accent3); color:#000;">繼續第二關 →</button>
+  <button class="btn-main btn-green" onclick="startSection2()">繼續第二關 →</button>
 </div>
 
 <!-- ===== 指數結果 ===== -->
 <div id="screen-result">
   <div class="result-card" id="resultCard">
     <span class="result-emoji" id="resultEmoji">🌱</span>
+    <div class="identity-badge" id="resultIdentity">—</div>
     <div class="result-level">快時尚指數</div>
     <div class="index-display">
       <div class="index-number" id="indexNumber">0</div>
       <div class="index-label">你的分數</div>
     </div>
     <div class="result-title" id="resultTitle">慢時尚實踐者</div>
-
     <div class="water-alert" id="waterAlert">
       <div class="water-alert-num" id="waterNum">0 公升</div>
       <div class="water-alert-label">⚠️ 你的衣服大約消耗了這麼多水才製造出來</div>
     </div>
-
     <div class="result-desc" id="resultDesc"></div>
-
     <div class="divider"></div>
     <div class="done-hint">等老師帶著全班一起看結果 👀<br>你的答案已經加入統計囉！</div>
   </div>
@@ -516,34 +276,44 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzjrobTSm4fptBQ
 const urlParams = new URLSearchParams(window.location.search);
 const SESSION_ID = urlParams.get('session') || 'default';
 
+// ===== 身份資料 =====
+let studentClass = '';
+let studentSeat = '';
+let studentName = '';
+
+// 監聽輸入，三格都有值才開放按鈕
+['inputClass','inputSeat','inputName'].forEach(id => {
+  document.getElementById(id).addEventListener('input', checkIdentityFilled);
+});
+
+function checkIdentityFilled() {
+  const c = document.getElementById('inputClass').value.trim();
+  const s = document.getElementById('inputSeat').value.trim();
+  const n = document.getElementById('inputName').value.trim();
+  document.getElementById('btnStart').disabled = !(c && s && n);
+}
+
 // ===== 全部題目 =====
 const allQuestions = [
-  // 畫面1：衣櫃健檢 (index 0-4)
-  { id:'q1', section:'衣櫃健檢', sectionIndex:1, text:'你衣櫃裡大概有幾件衣服？', options:['20件以下','21–40件','41–60件','60件以上'] },
-  { id:'q2', section:'衣櫃健檢', sectionIndex:1, text:'這些衣服裡，幾乎不穿的佔幾成？', options:['不到1成','約2–3成','約4–5成','超過一半'] },
-  { id:'q3', section:'衣櫃健檢', sectionIndex:1, text:'上一件買的衣服，你穿了幾次？', options:['還沒穿','1–3次','4–10次','超過10次'] },
-  { id:'q4', section:'衣櫃健檢', sectionIndex:1, text:'你的衣服平均穿多久才丟？', options:['不到半年','半年到1年','1–3年','3年以上'] },
-  { id:'q5', section:'衣櫃健檢', sectionIndex:1, text:'最近一年你大概丟掉幾件衣服？', options:['0件','1–5件','6–10件','超過10件'] },
-  // 畫面2：消費行為 (index 5-10)
-  { id:'q6', section:'消費行為', sectionIndex:2, text:'買衣服最主要的考量是什麼？', options:['價格便宜','好看／流行','品質耐穿','品牌理念'] },
-  { id:'q7', section:'消費行為', sectionIndex:2, text:'買衣服前，你會想到「這件衣服是誰做的」嗎？', options:['從來不會','偶爾會','常常會','每次都會'] },
-  { id:'q8', section:'消費行為', sectionIndex:2, text:'如果一件衣服標示有機棉／公平貿易，你願意多付多少錢？', options:['完全不願意','多付50元以內','多付50–200元','品質好就願意'] },
-  { id:'q9', section:'消費行為', sectionIndex:2, text:'你平均一個月大概花多少錢買衣服？', options:['幾乎不買','500元以下','500–1500元','1500元以上'] },
-  { id:'q10', section:'消費行為', sectionIndex:2, text:'買衣服時，你會看標籤上的產地或材質嗎？', options:['從來不看','偶爾看','常常看','每次都看'] },
-  { id:'q11', section:'消費行為', sectionIndex:2, text:'你最近買的衣服，主要是因為什麼？', options:['真的需要','便宜忍不住','好看想要','跟上流行'] }
+  {id:'q1',section:'衣櫃健檢',sectionIndex:1,text:'你衣櫃裡大概有幾件衣服？',options:['20件以下','21–40件','41–60件','60件以上']},
+  {id:'q2',section:'衣櫃健檢',sectionIndex:1,text:'這些衣服裡，幾乎不穿的佔幾成？',options:['不到1成','約2–3成','約4–5成','超過一半']},
+  {id:'q3',section:'衣櫃健檢',sectionIndex:1,text:'上一件買的衣服，你穿了幾次？',options:['還沒穿','1–3次','4–10次','超過10次']},
+  {id:'q4',section:'衣櫃健檢',sectionIndex:1,text:'你的衣服平均穿多久才丟？',options:['不到半年','半年到1年','1–3年','3年以上']},
+  {id:'q5',section:'衣櫃健檢',sectionIndex:1,text:'最近一年你大概丟掉幾件衣服？',options:['0件','1–5件','6–10件','超過10件']},
+  {id:'q6',section:'消費行為',sectionIndex:2,text:'買衣服最主要的考量是什麼？',options:['價格便宜','好看／流行','品質耐穿','品牌理念']},
+  {id:'q7',section:'消費行為',sectionIndex:2,text:'買衣服前，你會想到「這件衣服是誰做的」嗎？',options:['從來不會','偶爾會','常常會','每次都會']},
+  {id:'q8',section:'消費行為',sectionIndex:2,text:'如果一件衣服標示有機棉／公平貿易，你願意多付多少錢？',options:['完全不願意','多付50元以內','多付50–200元','品質好就願意']},
+  {id:'q9',section:'消費行為',sectionIndex:2,text:'你平均一個月大概花多少錢買衣服？',options:['幾乎不買','500元以下','500–1500元','1500元以上']},
+  {id:'q10',section:'消費行為',sectionIndex:2,text:'買衣服時，你會看標籤上的產地或材質嗎？',options:['從來不看','偶爾看','常常看','每次都看']},
+  {id:'q11',section:'消費行為',sectionIndex:2,text:'你最近買的衣服，主要是因為什麼？',options:['真的需要','便宜忍不住','好看想要','跟上流行']}
 ];
 
-// 指數計算用的數值
 const scoreMap = {
-  q1: [15, 30, 50, 70],       // 件數
-  q2: [0.1, 0.25, 0.45, 0.6], // 不穿比例
-  q3: [0.5, 2, 7, 15],        // 穿次數
-  q4: [2.0, 1.5, 1.0, 0.5],  // 壽命係數
-  q5: [0, 3, 8, 15]           // 丟棄加分
+  q1:[15,30,50,70], q2:[0.1,0.25,0.45,0.6],
+  q3:[0.5,2,7,15], q4:[2.0,1.5,1.0,0.5], q5:[0,3,8,15]
 };
 
-const SECTION1_END = 5; // q0–q4 是畫面1
-
+const SECTION1_END = 5;
 let currentQ = 0;
 let selectedOption = null;
 let answered = false;
@@ -551,17 +321,34 @@ let pollInterval = null;
 let respondentPollInterval = null;
 const letters = ['A','B','C','D'];
 const studentId = 'S_' + Date.now() + '_' + Math.random().toString(36).substr(2,6);
-
-// 儲存所有答案（用於計算指數）
 const userAnswers = {};
 
 // ===== 開始 =====
 function startQuiz() {
+  studentClass = document.getElementById('inputClass').value.trim();
+  studentSeat  = document.getElementById('inputSeat').value.trim();
+  studentName  = document.getElementById('inputName').value.trim();
+
   document.getElementById('screen-intro').style.display = 'none';
   document.getElementById('screen-quiz').style.display = 'block';
   renderStepDots();
   renderQuestion();
   startRespondentPoll();
+
+  // 同步確認目前題目（解決問題1：若老師已開放題目，學生重新進入時對齊）
+  syncCurrentQuestion();
+}
+
+// ===== 同步目前題目 =====
+async function syncCurrentQuestion() {
+  try {
+    const res = await fetch(`${APPS_SCRIPT_URL}?type=status&session=${SESSION_ID}`);
+    const data = await res.json();
+    if (data.currentQuestion > currentQ) {
+      currentQ = data.currentQuestion;
+      renderQuestion();
+    }
+  } catch(e) {}
 }
 
 // ===== 進入第二關 =====
@@ -575,18 +362,14 @@ function startSection2() {
 // ===== 步驟點 =====
 function renderStepDots() {
   const q = allQuestions[currentQ];
-  const isSection1 = q.sectionIndex === 1;
-  const sectionQs = isSection1
-    ? allQuestions.filter(q => q.sectionIndex === 1)
-    : allQuestions.filter(q => q.sectionIndex === 2);
-  const localIndex = isSection1 ? currentQ : currentQ - SECTION1_END;
-
-  const container = document.getElementById('stepDots');
-  container.innerHTML = sectionQs.map((_, i) => {
-    let cls = 'step-dot';
-    if (i === localIndex) cls += isSection1 ? ' active' : ' active blue';
-    else if (i < localIndex) cls += ' done';
-    return `<div class="${cls}"></div>`;
+  const isS1 = q.sectionIndex === 1;
+  const sectionQs = allQuestions.filter(x => x.sectionIndex === q.sectionIndex);
+  const localIdx = isS1 ? currentQ : currentQ - SECTION1_END;
+  document.getElementById('stepDots').innerHTML = sectionQs.map((_,i) => {
+    let c = 'step-dot';
+    if(i===localIdx) c += isS1 ? ' active' : ' active blue';
+    else if(i<localIdx) c += ' done';
+    return `<div class="${c}"></div>`;
   }).join('');
 }
 
@@ -596,162 +379,124 @@ function renderQuestion() {
   selectedOption = null;
   answered = false;
 
-  // 更新區段標示
-  const isSection1 = q.sectionIndex === 1;
-  document.getElementById('sectionTag').textContent = isSection1 ? '第一關' : '第二關';
-  document.getElementById('sectionTag').style.background = isSection1
-    ? 'rgba(232,255,77,0.12)' : 'rgba(77,255,180,0.12)';
-  document.getElementById('sectionTag').style.borderColor = isSection1
-    ? 'rgba(232,255,77,0.3)' : 'rgba(77,255,180,0.3)';
-  document.getElementById('sectionTag').style.color = isSection1
-    ? 'var(--accent)' : 'var(--accent3)';
-  document.getElementById('sectionTitle').textContent = q.section;
+  const isS1 = q.sectionIndex === 1;
+  const tag = document.getElementById('sectionTag');
+  tag.textContent = isS1 ? '第一關' : '第二關';
+  tag.style.background = isS1 ? 'rgba(232,255,77,0.12)' : 'rgba(77,255,180,0.12)';
+  tag.style.borderColor = isS1 ? 'rgba(232,255,77,0.3)' : 'rgba(77,255,180,0.3)';
+  tag.style.color = isS1 ? 'var(--accent)' : 'var(--accent3)';
+  document.getElementById('sectionTitleText').textContent = q.section;
 
-  // 題號與題目
-  document.getElementById('qNum').textContent = `Q${currentQ + 1}`;
-  document.getElementById('qNum').className = 'q-num' + (isSection1 ? '' : ' blue');
-  document.getElementById('qSection').textContent = q.section;
+  document.getElementById('qNum').textContent = `Q${currentQ+1}`;
+  document.getElementById('qNum').className = 'q-num' + (isS1 ? '' : ' blue');
+  document.getElementById('qSectionLabel').textContent = q.section;
   document.getElementById('questionText').textContent = q.text;
+  document.getElementById('progressBar').style.width = (currentQ/allQuestions.length*100)+'%';
 
-  // 進度條
-  const pct = (currentQ / allQuestions.length) * 100;
-  document.getElementById('progressBar').style.width = pct + '%';
-
-  // 選項
-  const container = document.getElementById('optionsContainer');
-  container.innerHTML = q.options.map((opt, i) => `
+  document.getElementById('optionsContainer').innerHTML = q.options.map((opt,i) => `
     <div class="option" id="opt${i}" onclick="selectOption(${i})">
       <div class="option-letter">${letters[i]}</div>
       <div class="option-text">${opt}</div>
-    </div>
-  `).join('');
+    </div>`).join('');
 
-  // 重置狀態
   document.getElementById('waitingBlock').classList.remove('show');
   document.getElementById('btnSubmit').style.display = 'block';
   document.getElementById('btnSubmit').disabled = true;
   document.getElementById('btnSubmit').textContent = '確認送出 →';
-  container.querySelectorAll('.option').forEach(el => el.style.pointerEvents = 'auto');
+  document.querySelectorAll('.option').forEach(el => el.style.pointerEvents = 'auto');
 
-  // 卡片動畫
   const card = document.getElementById('questionCard');
-  card.style.animation = 'none';
-  card.offsetHeight;
+  card.style.animation = 'none'; card.offsetHeight;
   card.style.animation = 'slideUp 0.4s cubic-bezier(0.4,0,0.2,1)';
-
   renderStepDots();
 }
 
 // ===== 選擇選項 =====
 function selectOption(index) {
-  if (answered) return;
+  if(answered) return;
   selectedOption = index;
-  document.querySelectorAll('.option').forEach((el, i) => {
-    el.classList.toggle('selected', i === index);
-  });
+  document.querySelectorAll('.option').forEach((el,i) => el.classList.toggle('selected', i===index));
   document.getElementById('btnSubmit').disabled = false;
 }
 
 // ===== 送出答案 =====
 async function submitAnswer() {
-  if (selectedOption === null || answered) return;
+  if(selectedOption===null || answered) return;
   answered = true;
 
   const q = allQuestions[currentQ];
-  const answerText = q.options[selectedOption];
-  userAnswers[q.id] = selectedOption; // 記錄答案序號
+  userAnswers[q.id] = selectedOption;
 
-  // 顯示送出反饋
-  const feedback = document.getElementById('submitFeedback');
-  feedback.classList.add('show');
-  setTimeout(() => feedback.classList.remove('show'), 1400);
+  document.getElementById('submitFeedback').classList.add('show');
+  setTimeout(() => document.getElementById('submitFeedback').classList.remove('show'), 1400);
 
-  // 送到 Apps Script
   try {
     await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        type: 'answer',
-        studentId,
-        session: SESSION_ID,
-        questionId: q.id,
-        questionIndex: currentQ,
-        answer: answerText,
-        answerIndex: selectedOption,
-        timestamp: new Date().toISOString()
+        type:'answer', studentId, session:SESSION_ID,
+        studentClass, studentSeat, studentName,
+        questionId:q.id, questionIndex:currentQ,
+        answer:q.options[selectedOption], answerIndex:selectedOption,
+        timestamp:new Date().toISOString()
       })
     });
   } catch(e) {}
 
-  // 顯示等待畫面
   setTimeout(() => {
     document.getElementById('waitingBlock').classList.add('show');
     document.getElementById('btnSubmit').style.display = 'none';
-    document.querySelectorAll('.option').forEach(el => el.style.pointerEvents = 'none');
+    document.querySelectorAll('.option').forEach(el => el.style.pointerEvents='none');
     startWaitingPoll();
   }, 1500);
 }
 
-// ===== 等待老師開放 =====
+// ===== 等待老師開放（問題1修正：縮短輪詢間隔至2秒，更靈敏）=====
 function startWaitingPoll() {
-  if (pollInterval) clearInterval(pollInterval);
-  pollInterval = setInterval(checkNextQuestion, 3000);
+  if(pollInterval) clearInterval(pollInterval);
+  pollInterval = setInterval(checkNextQuestion, 2000);
 }
 
 async function checkNextQuestion() {
   try {
-    const res = await fetch(`${APPS_SCRIPT_URL}?type=status&session=${SESSION_ID}`);
+    const res = await fetch(`${APPS_SCRIPT_URL}?type=status&session=${SESSION_ID}&t=${Date.now()}`);
     const data = await res.json();
 
-    if (data.currentQuestion > currentQ) {
+    if(data.currentQuestion > currentQ) {
       clearInterval(pollInterval);
       const nextQ = data.currentQuestion;
 
-      // 檢查是否剛完成第一關
-      if (currentQ === SECTION1_END - 1 && nextQ === SECTION1_END) {
-        showTransition();
+      if(currentQ === SECTION1_END-1 && nextQ === SECTION1_END) {
         currentQ = nextQ;
+        showTransition();
         return;
       }
-
       currentQ = nextQ;
-
-      if (currentQ >= allQuestions.length) {
-        showResult();
-      } else {
-        renderQuestion();
-      }
+      if(currentQ >= allQuestions.length) showResult();
+      else renderQuestion();
     }
   } catch(e) {}
 }
 
-// ===== 第一關過渡畫面 =====
+// ===== 第一關過渡 =====
 function showTransition() {
   document.getElementById('screen-quiz').style.display = 'none';
   const t = document.getElementById('screen-transition');
   t.style.display = 'block';
-  t.style.animation = 'none';
-  t.offsetHeight;
+  t.style.animation = 'none'; t.offsetHeight;
   t.style.animation = 'slideUp 0.5s ease';
 }
 
-// ===== 計算快時尚指數 =====
+// ===== 計算指數 =====
 function calcIndex() {
   const q1 = userAnswers['q1'] ?? 1;
   const q2 = userAnswers['q2'] ?? 1;
   const q3 = userAnswers['q3'] ?? 2;
   const q4 = userAnswers['q4'] ?? 2;
   const q5 = userAnswers['q5'] ?? 0;
-
   const clothes = scoreMap.q1[q1];
-  const unused = scoreMap.q2[q2];
-  const wearTimes = scoreMap.q3[q3];
-  const lifeCoef = scoreMap.q4[q4];
-  const discardBonus = scoreMap.q5[q5];
-
-  const raw = (clothes * unused / wearTimes) * lifeCoef + discardBonus;
+  const raw = (clothes * scoreMap.q2[q2] / scoreMap.q3[q3]) * scoreMap.q4[q4] + scoreMap.q5[q5];
   return { score: Math.round(raw), clothes };
 }
 
@@ -759,49 +504,34 @@ function calcIndex() {
 function showResult() {
   document.getElementById('screen-quiz').style.display = 'none';
   document.getElementById('progressBar').style.width = '100%';
-  if (respondentPollInterval) clearInterval(respondentPollInterval);
+  if(respondentPollInterval) clearInterval(respondentPollInterval);
 
-  const { score, clothes } = calcIndex();
-
-  // 等級判定
+  const {score, clothes} = calcIndex();
   let level, emoji, title, desc;
-  if (score <= 3) {
-    level = 0; emoji = '🌱'; title = '慢時尚實踐者';
-    desc = `你的衣服都有被<strong>好好使用</strong>，閒置比例低、穿著時間長。這樣的習慣已經在默默保護環境了。繼續保持！`;
-  } else if (score <= 8) {
-    level = 1; emoji = '🌀'; title = '快時尚入門用戶';
-    desc = `你有一些衣服<strong>還沒被充分使用</strong>。試著在買新衣服前，先翻翻衣櫃——說不定有被遺忘的寶貝。`;
-  } else if (score <= 15) {
-    level = 2; emoji = '⚠️'; title = '中度快時尚依賴';
-    desc = `你的衣櫃正在<strong>默默消耗地球資源</strong>。每件閒置的衣服背後，都有水、碳排放和勞工的代價在等著被看見。`;
-  } else {
-    level = 3; emoji = '🔥'; title = '快時尚重度用戶';
-    desc = `你的消費模式和快時尚品牌的<strong>設計目標完全吻合</strong>——買快、丟快、再買。這個循環正是時尚產業成為全球第二大污染源的原因。`;
-  }
+  if(score<=3){level=0;emoji='🌱';title='慢時尚實踐者';desc='你的衣服都有被<strong>好好使用</strong>，閒置比例低、穿著時間長。這樣的習慣已經在默默保護環境了。繼續保持！';}
+  else if(score<=8){level=1;emoji='🌀';title='快時尚入門用戶';desc='你有一些衣服<strong>還沒被充分使用</strong>。試著在買新衣服前，先翻翻衣櫃——說不定有被遺忘的寶貝。';}
+  else if(score<=15){level=2;emoji='⚠️';title='中度快時尚依賴';desc='你的衣櫃正在<strong>默默消耗地球資源</strong>。每件閒置的衣服背後，都有水、碳排放和勞工的代價在等著被看見。';}
+  else{level=3;emoji='🔥';title='快時尚重度用戶';desc='你的消費模式和快時尚品牌的<strong>設計目標完全吻合</strong>——買快、丟快、再買。這個循環正是時尚產業成為全球第二大污染源的原因。';}
 
-  // 水資源換算
   const waterLiters = clothes * 2700;
-  const waterTubs = Math.round(waterLiters / 90); // 一個浴缸約90公升
+  const waterTubs = Math.round(waterLiters / 90);
 
-  // 填入畫面
   document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultIdentity').textContent = `${studentClass} ${studentSeat}號 ${studentName}`;
   document.getElementById('indexNumber').textContent = score;
   document.getElementById('resultTitle').textContent = title;
   document.getElementById('resultTitle').className = `result-title level-${level}`;
   document.getElementById('resultDesc').innerHTML = desc;
   document.getElementById('resultCard').className = `result-card level-${level}`;
 
-  if (level >= 2) {
-    document.getElementById('waterNum').textContent =
-      `${waterLiters.toLocaleString()} 公升（約 ${waterTubs} 個浴缸）`;
+  if(level>=2){
+    document.getElementById('waterNum').textContent = `${waterLiters.toLocaleString()} 公升（約 ${waterTubs} 個浴缸）`;
     document.getElementById('waterAlert').classList.add('show');
   }
 
-  const resultScreen = document.getElementById('screen-result');
-  resultScreen.style.display = 'block';
-  resultScreen.style.animation = 'none';
-  resultScreen.offsetHeight;
-  resultScreen.style.animation = 'slideUp 0.6s ease';
+  const s = document.getElementById('screen-result');
+  s.style.display = 'block'; s.style.animation='none'; s.offsetHeight;
+  s.style.animation = 'slideUp 0.6s ease';
 }
 
 // ===== 填答人數 =====
