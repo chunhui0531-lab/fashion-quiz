@@ -463,18 +463,26 @@ async function checkNextQuestion() {
     const res = await fetch(`${APPS_SCRIPT_URL}?type=status&session=${SESSION_ID}&t=${Date.now()}`);
     const data = await res.json();
 
-    if(data.currentQuestion > currentQ) {
+    if (data.currentQuestion > currentQ) {
       clearInterval(pollInterval);
       const nextQ = data.currentQuestion;
 
-      if(currentQ === SECTION1_END-1 && nextQ === SECTION1_END) {
+      // 超過題目總數 → 顯示結果
+      if (nextQ >= allQuestions.length) {
+        currentQ = nextQ;
+        showResult();
+        return;
+      }
+
+      // 剛完成第一關（Q5→Q6）→ 顯示過渡畫面
+      if (currentQ === SECTION1_END - 1 && nextQ === SECTION1_END) {
         currentQ = nextQ;
         showTransition();
         return;
       }
+
       currentQ = nextQ;
-      if(currentQ >= allQuestions.length) showResult();
-      else renderQuestion();
+      renderQuestion();
     }
   } catch(e) {}
 }

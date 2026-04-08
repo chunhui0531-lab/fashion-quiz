@@ -445,7 +445,12 @@
     <button class="btn btn-refresh" onclick="manualRefresh()">
       <span>↻</span> 手動刷新
     </button>
-    <button class="btn" onclick="showNewSession()" style="background:var(--card); border:1px solid rgba(77,255,180,0.4); color:var(--accent3);">
+    <button class="btn" onclick="exportReport()" id="btnExport"
+      style="background:var(--card);border:1px solid rgba(167,139,250,0.4);color:#a78bfa;">
+      📊 匯出報表
+    </button>
+    <button class="btn" onclick="showNewSession()"
+      style="background:var(--card);border:1px solid rgba(77,255,180,0.4);color:var(--accent3);">
       ＋ 新場次
     </button>
     <button class="btn btn-next" id="btnNextQ" onclick="openNextQuestion()">
@@ -827,8 +832,10 @@ function viewQuestion(idx) {
 }
 
 async function openNextQuestion() {
-  if (currentQ >= questions.length - 1) return;
-  const nextQ = currentQ + 1;
+  // 最後一題：送出結束訊號（index = 題目總數）
+  const isLast = currentQ >= questions.length - 1;
+  const nextQ = isLast ? questions.length : currentQ + 1;
+
   try {
     await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
@@ -841,10 +848,52 @@ async function openNextQuestion() {
       })
     });
   } catch(e) {}
-  viewQuestion(nextQ);
+
+  if (isLast) {
+    // 老師端更新按鈕狀態
+    document.getElementById('btnNextQ').disabled = true;
+    document.getElementById('btnNextQ').textContent = '全部完成 ✓';
+    document.getElementById('footerQ').textContent = '全部完成';
+  } else {
+    viewQuestion(nextQ);
+  }
 }
 
 // 場次機制取代reset，不再需要手動重置
+
+async function exportReport() {
+  if (!currentSession) {
+    alert('請先建立場次再匯出報表');
+    return;
+  }
+
+  const btn = document.getElementById('btnExport');
+  btn.textContent = '⏳ 產生中...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(`${APPS_SCRIPT_URL}?type=report&session=${currentSession}`);
+    const data = await res.json();
+
+    if (data.ok) {
+      // 直接開啟試算表報表頁
+      window.open(data.url, '_blank');
+      btn.textContent = `✅ 已開啟（${data.studentCount}人）`;
+      setTimeout(() => {
+        btn.textContent = '📊 匯出報表';
+        btn.disabled = false;
+      }, 3000);
+    } else {
+      alert('報表產生失敗：' + (data.msg || '請確認學生已填答'));
+      btn.textContent = '📊 匯出報表';
+      btn.disabled = false;
+    }
+  } catch(e) {
+    alert('連線失敗，請重試');
+    btn.textContent = '📊 匯出報表';
+    btn.disabled = false;
+  }
+}
 </script>
 </body>
 </html>
