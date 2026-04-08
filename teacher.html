@@ -528,8 +528,25 @@
     <span>｜</span>
     <span>場次：<strong id="footerSession" style="color:var(--accent3)">尚未建立</strong></span>
   </div>
-  <div id="footerQR" style="font-size:12px; color:var(--muted);">請先建立場次以產生學生端連結</div>
+  <div id="footerQR" style="font-size:12px;color:var(--muted);">請先按「＋ 新場次」產生學生端連結</div>
 </footer>
+
+<!-- QR Code Modal（問題3修正：建立場次後自動顯示QR） -->
+<div id="qrModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:998;align-items:center;justify-content:center;">
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:36px 40px;width:100%;max-width:460px;text-align:center;">
+    <div style="font-size:14px;color:var(--muted);margin-bottom:8px;">學生掃描此 QR Code 進入</div>
+    <div style="font-size:18px;font-weight:900;color:var(--accent3);margin-bottom:20px;" id="qrSessionLabel">場次：—</div>
+    <div style="background:#fff;border-radius:16px;padding:16px;display:inline-block;margin-bottom:20px;">
+      <img id="qrImage" src="" width="200" height="200" alt="QR Code">
+    </div>
+    <div style="font-size:11px;color:var(--muted);word-break:break-all;margin-bottom:20px;" id="qrUrlDisplay"></div>
+    <button onclick="document.getElementById('qrModal').style.display='none'"
+      style="width:100%;padding:14px;background:var(--accent);border:none;border-radius:12px;
+      color:#000;font-size:14px;font-weight:900;cursor:pointer;font-family:inherit;">
+      關閉，開始上課 →
+    </button>
+  </div>
+</div>
 
 <script>
 // ==========================================
@@ -565,39 +582,44 @@ async function confirmNewSession() {
   localStorage.setItem('currentSession', currentSession);
   hideSessionModal();
 
-  // 通知 Apps Script 新場次
   try {
     await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        type: 'newSession',
-        session: currentSession
-      })
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ type:'newSession', session:currentSession })
     });
   } catch(e) {}
 
   currentQ = 0;
   updateSessionUI();
   viewQuestion(0);
+  showQRModal(); // 問題3修正：確認後自動顯示QR
+}
+
+function showQRModal() {
+  if(!currentSession) return;
+  const baseUrl = window.location.href.replace('teacher.html','student.html');
+  const studentUrl = `${baseUrl}?session=${currentSession}`;
+
+  // 用免費QR API產生圖片
+  const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(studentUrl)}`;
+  document.getElementById('qrImage').src = qrApiUrl;
+  document.getElementById('qrSessionLabel').textContent = `場次：${currentSession}`;
+  document.getElementById('qrUrlDisplay').textContent = studentUrl;
+  document.getElementById('qrModal').style.display = 'flex';
 }
 
 function updateSessionUI() {
-  if (!currentSession) return;
-
-  // header badge
+  if(!currentSession) return;
   document.getElementById('sessionDisplay').textContent = currentSession;
   document.getElementById('sessionBadge').style.display = 'flex';
-
-  // footer
   document.getElementById('footerSession').textContent = currentSession;
 
-  // 產生學生端連結
-  const baseUrl = window.location.href.replace('teacher.html', 'student.html');
+  const baseUrl = window.location.href.replace('teacher.html','student.html');
   const studentUrl = `${baseUrl}?session=${currentSession}`;
   document.getElementById('footerQR').innerHTML =
-    `學生端連結：<a href="${studentUrl}" target="_blank" style="color:var(--accent3);">${studentUrl}</a>`;
+    `學生端：<a href="${studentUrl}" target="_blank" style="color:var(--accent3);">${studentUrl}</a>
+     &nbsp;｜&nbsp;<a href="#" onclick="showQRModal();return false;" style="color:var(--accent);">顯示 QR Code</a>`;
 }
 
 // ==========================================
