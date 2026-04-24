@@ -31,6 +31,8 @@
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
   @keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
   @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  @keyframes countUp{from{opacity:0;transform:scale(0.5)}to{opacity:1;transform:scale(1)}}
+  @keyframes barGrow{from{width:0}to{width:var(--target-w)}}
 
   /* ===== 開場 ===== */
   #screen-intro{text-align:center;max-width:460px;animation:slideUp 0.6s ease;}
@@ -133,42 +135,101 @@
   .trans-title{font-size:22px;font-weight:900;color:var(--accent);margin-bottom:10px;}
   .trans-sub{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:28px;}
 
-  /* ===== 結果 ===== */
-  #screen-result{display:none;width:100%;max-width:520px;}
-  .result-card{background:var(--card);border:1px solid var(--border);border-radius:24px;
-    padding:36px 32px;text-align:center;position:relative;overflow:hidden;}
-  .result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;}
-  .result-card.level-0::before{background:linear-gradient(90deg,#4dffb4,#00cc88);}
-  .result-card.level-1::before{background:linear-gradient(90deg,#e8ff4d,#ccdd00);}
-  .result-card.level-2::before{background:linear-gradient(90deg,#ff9f35,#ff6b35);}
-  .result-card.level-3::before{background:linear-gradient(90deg,#ff4444,#cc0000);}
-  .result-emoji{font-size:64px;margin-bottom:16px;display:block;}
-  .result-level{font-size:13px;font-weight:700;letter-spacing:2px;color:var(--muted);margin-bottom:8px;}
-  .result-title{font-size:26px;font-weight:900;margin-bottom:20px;}
-  .result-title.level-0{color:var(--accent3);}
-  .result-title.level-1{color:var(--accent);}
-  .result-title.level-2{color:#ff9f35;}
-  .result-title.level-3{color:#ff5555;}
-  .index-display{background:var(--surface);border:1px solid var(--border);
-    border-radius:16px;padding:20px;margin-bottom:20px;}
-  .index-number{font-size:56px;font-weight:900;line-height:1;margin-bottom:4px;}
-  .index-label{font-size:12px;color:var(--muted);}
-  .water-alert{background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.3);
-    border-radius:14px;padding:16px 20px;margin-bottom:20px;display:none;}
-  .water-alert.show{display:block;}
-  .water-alert-num{font-size:22px;font-weight:900;color:#ff9f35;margin-bottom:4px;}
-  .water-alert-label{font-size:12px;color:var(--muted);}
-  .result-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px;
-    text-align:left;background:var(--surface);border-radius:12px;padding:16px 18px;}
-  .result-desc strong{color:var(--text);}
-  .divider{height:1px;background:var(--border);margin:20px 0;}
-  .done-hint{font-size:13px;color:var(--muted);line-height:1.6;}
-  .done-hint span{color:var(--accent);font-weight:700;}
+  /* ===== 結果頁 ===== */
+  #screen-result{display:none;width:100%;max-width:560px;padding-bottom:40px;}
 
-  /* 身份標籤（結果頁顯示） */
-  .identity-badge{display:inline-flex;align-items:center;gap:8px;
+  .result-hero{text-align:center;padding:32px 28px 24px;
+    background:var(--card);border:1px solid var(--border);
+    border-radius:24px;margin-bottom:16px;position:relative;overflow:hidden;}
+  .result-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;}
+  .result-hero.level-0::before{background:linear-gradient(90deg,#4dffb4,#00cc88);}
+  .result-hero.level-1::before{background:linear-gradient(90deg,#e8ff4d,#ccdd00);}
+  .result-hero.level-2::before{background:linear-gradient(90deg,#ff9f35,#ff6b35);}
+  .result-hero.level-3::before{background:linear-gradient(90deg,#ff4444,#cc0000);}
+
+  .result-emoji-big{font-size:72px;display:block;margin-bottom:12px;
+    animation:float 3s ease-in-out infinite;}
+  .identity-tag{display:inline-flex;align-items:center;gap:8px;
     background:var(--surface);border:1px solid var(--border);border-radius:20px;
-    padding:6px 14px;font-size:13px;margin-bottom:20px;}
+    padding:6px 16px;font-size:13px;margin-bottom:16px;}
+  .score-circle{width:140px;height:140px;border-radius:50%;
+    border:3px solid var(--border);margin:0 auto 16px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:var(--surface);position:relative;}
+  .score-circle.level-0{border-color:#4dffb4;box-shadow:0 0 32px rgba(77,255,180,0.2);}
+  .score-circle.level-1{border-color:#e8ff4d;box-shadow:0 0 32px rgba(232,255,77,0.2);}
+  .score-circle.level-2{border-color:#ff9f35;box-shadow:0 0 32px rgba(255,159,53,0.2);}
+  .score-circle.level-3{border-color:#ff4444;box-shadow:0 0 32px rgba(255,68,68,0.2);}
+  .score-num{font-size:56px;font-weight:900;line-height:1;animation:countUp 0.6s cubic-bezier(0.4,0,0.2,1);}
+  .score-num.level-0{color:#4dffb4;}
+  .score-num.level-1{color:#e8ff4d;}
+  .score-num.level-2{color:#ff9f35;}
+  .score-num.level-3{color:#ff5555;}
+  .score-label{font-size:11px;color:var(--muted);margin-top:2px;}
+  .result-level-title{font-size:22px;font-weight:900;margin-bottom:8px;}
+  .result-level-title.level-0{color:#4dffb4;}
+  .result-level-title.level-1{color:#e8ff4d;}
+  .result-level-title.level-2{color:#ff9f35;}
+  .result-level-title.level-3{color:#ff5555;}
+  .result-desc-short{font-size:13px;color:var(--muted);line-height:1.7;
+    max-width:400px;margin:0 auto;}
+
+  /* ===== 區塊卡片 ===== */
+  .info-card{background:var(--card);border:1px solid var(--border);
+    border-radius:20px;padding:24px 24px;margin-bottom:16px;}
+  .info-card-title{font-size:11px;font-weight:700;letter-spacing:2px;
+    color:var(--muted);margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+  .info-card-title span{font-size:16px;}
+
+  /* ===== 計算分解 ===== */
+  .calc-formula{background:var(--surface);border-radius:12px;padding:14px 16px;
+    margin-bottom:16px;font-size:12px;color:var(--muted);line-height:2;}
+  .calc-formula strong{color:var(--accent);}
+  .calc-formula .eq{color:var(--text);}
+
+  .breakdown-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+  .breakdown-icon{font-size:20px;width:32px;text-align:center;flex-shrink:0;}
+  .breakdown-info{flex:1;}
+  .breakdown-label{font-size:12px;color:var(--muted);margin-bottom:4px;}
+  .breakdown-bar-wrap{height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
+  .breakdown-bar{height:100%;border-radius:4px;transition:width 1s cubic-bezier(0.4,0,0.2,1);}
+  .breakdown-val{font-size:14px;font-weight:700;color:var(--text);
+    white-space:nowrap;flex-shrink:0;min-width:36px;text-align:right;}
+
+  .score-breakdown-row{display:flex;justify-content:space-between;align-items:center;
+    padding:10px 0;border-bottom:1px solid var(--border);}
+  .score-breakdown-row:last-child{border-bottom:none;}
+  .sbd-label{font-size:13px;color:var(--muted);}
+  .sbd-val{font-size:15px;font-weight:900;}
+  .sbd-detail{font-size:11px;color:var(--muted);margin-top:2px;}
+  .total-score-row{display:flex;justify-content:space-between;align-items:center;
+    padding:12px 16px;background:var(--surface);border-radius:10px;margin-top:12px;}
+  .total-label{font-size:13px;font-weight:700;}
+  .total-val{font-size:22px;font-weight:900;color:var(--accent);}
+
+  /* ===== 環境影響 ===== */
+  .env-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .env-item{background:var(--surface);border-radius:14px;padding:16px 14px;text-align:center;}
+  .env-icon{font-size:28px;margin-bottom:6px;}
+  .env-val{font-size:20px;font-weight:900;color:var(--accent2);margin-bottom:4px;}
+  .env-label{font-size:11px;color:var(--muted);line-height:1.4;}
+
+  /* ===== 消費行為快照 ===== */
+  .behavior-item{display:flex;align-items:flex-start;gap:12px;
+    padding:10px 0;border-bottom:1px solid var(--border);}
+  .behavior-item:last-child{border-bottom:none;}
+  .behavior-q{font-size:10px;font-weight:700;background:rgba(77,255,180,0.12);
+    color:var(--accent3);padding:2px 8px;border-radius:10px;white-space:nowrap;
+    flex-shrink:0;margin-top:2px;}
+  .behavior-text{font-size:13px;color:var(--text);line-height:1.5;}
+  .behavior-answer{font-weight:700;color:var(--accent3);}
+  .behavior-insight{font-size:11px;color:var(--muted);margin-top:3px;}
+
+  /* ===== 等待提示 ===== */
+  .done-card{background:var(--card);border:1px solid var(--border);
+    border-radius:20px;padding:24px;text-align:center;}
+  .done-hint{font-size:13px;color:var(--muted);line-height:1.8;}
+  .done-hint strong{color:var(--accent);}
 </style>
 </head>
 <body>
@@ -250,42 +311,69 @@
 
 <!-- ===== 指數結果 ===== -->
 <div id="screen-result">
-  <div class="result-card" id="resultCard">
-    <span class="result-emoji" id="resultEmoji">🌱</span>
-    <div class="identity-badge" id="resultIdentity">—</div>
-    <div class="result-level">快時尚指數</div>
-    <div class="index-display">
-      <div class="index-number" id="indexNumber">0</div>
-      <div class="index-label">你的分數</div>
+
+  <!-- 英雄區：分數 + 等級 -->
+  <div class="result-hero" id="resultHero">
+    <span class="result-emoji-big" id="resultEmoji">🌱</span>
+    <div class="identity-tag" id="resultIdentity">—</div>
+    <div class="score-circle" id="scoreCircle">
+      <span class="score-num" id="indexNumber">0</span>
+      <span class="score-label">快時尚指數</span>
     </div>
-    <div class="result-title" id="resultTitle">慢時尚實踐者</div>
-    <div class="water-alert" id="waterAlert">
-      <div class="water-alert-num" id="waterNum">0 公升</div>
-      <div class="water-alert-label">⚠️ 你的衣服大約消耗了這麼多水才製造出來</div>
-    </div>
-    <div class="result-desc" id="resultDesc"></div>
-    <div class="divider"></div>
-    <div class="done-hint">等老師帶著全班一起看結果 👀<br>你的答案已經加入統計囉！</div>
+    <div class="result-level-title" id="resultTitle">慢時尚實踐者</div>
+    <div class="result-desc-short" id="resultDesc"></div>
   </div>
+
+  <!-- 指數計算說明 -->
+  <div class="info-card">
+    <div class="info-card-title"><span>🧮</span> 你的指數怎麼來的？</div>
+
+    <div class="calc-formula" id="calcFormula">
+      指數 ＝ （衣服數量 × 閒置比例 ÷ 平均穿次）× 穿著時長係數 ＋ 丟棄分
+    </div>
+
+    <div id="breakdownSection"></div>
+
+    <div class="total-score-row">
+      <div class="total-label">快時尚指數</div>
+      <div class="total-val" id="totalScoreDisplay">0</div>
+    </div>
+  </div>
+
+  <!-- 環境影響 -->
+  <div class="info-card" id="envCard">
+    <div class="info-card-title"><span>🌍</span> 你的衣物代價</div>
+    <div class="env-grid" id="envGrid"></div>
+  </div>
+
+  <!-- 消費行為快照 -->
+  <div class="info-card">
+    <div class="info-card-title"><span>🛍️</span> 你的消費行為快照</div>
+    <div id="behaviorSection"></div>
+  </div>
+
+  <!-- 等待老師 -->
+  <div class="done-card">
+    <div style="font-size:36px;margin-bottom:10px;">👀</div>
+    <div class="done-hint">
+      你的答案已加入統計囉！<br>
+      等老師帶著全班一起看結果<br>
+      <strong>記得比較看看你和同學的差異</strong>
+    </div>
+  </div>
+
 </div>
 
 <script>
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzjrobTSm4fptBQl4Ie4HtfDPu3KLugyjn5qGfWJ2HrjEf_rY1_Vh4cbcM44ljrJIlr/exec';
-
-// 從網址讀取場次代碼
 const urlParams = new URLSearchParams(window.location.search);
 const SESSION_ID = urlParams.get('session') || 'default';
 
-// ===== 身份資料 =====
-let studentClass = '';
-let studentSeat = '';
-let studentName = '';
+let studentClass = '', studentSeat = '', studentName = '';
 
-// 監聽輸入，三格都有值才開放按鈕
 ['inputClass','inputSeat','inputName'].forEach(id => {
   document.getElementById(id).addEventListener('input', checkIdentityFilled);
 });
-
 function checkIdentityFilled() {
   const c = document.getElementById('inputClass').value.trim();
   const s = document.getElementById('inputSeat').value.trim();
@@ -293,7 +381,7 @@ function checkIdentityFilled() {
   document.getElementById('btnStart').disabled = !(c && s && n);
 }
 
-// ===== 全部題目 =====
+// ===== 題目資料 =====
 const allQuestions = [
   {id:'q1',section:'衣櫃健檢',sectionIndex:1,text:'你衣櫃裡大概有幾件衣服？',options:['20件以下','21–40件','41–60件','60件以上']},
   {id:'q2',section:'衣櫃健檢',sectionIndex:1,text:'這些衣服裡，幾乎不穿的佔幾成？',options:['不到1成','約2–3成','約4–5成','超過一半']},
@@ -308,9 +396,48 @@ const allQuestions = [
   {id:'q11',section:'消費行為',sectionIndex:2,text:'你最近買的衣服，主要是因為什麼？',options:['真的需要','便宜忍不住','好看想要','跟上流行']}
 ];
 
+// 計分對照
 const scoreMap = {
-  q1:[15,30,50,70], q2:[0.1,0.25,0.45,0.6],
-  q3:[0.5,2,7,15], q4:[2.0,1.5,1.0,0.5], q5:[0,3,8,15]
+  q1:[15,30,50,70],
+  q2:[0.1,0.25,0.45,0.6],
+  q3:[0.5,2,7,15],
+  q4:[2.0,1.5,1.0,0.5],
+  q5:[0,3,8,15]
+};
+
+// Q1 閒置件數文字
+const clothesLabels = ['約 15 件','約 30 件','約 50 件','約 70 件'];
+const idleLabels    = ['約 10%','約 25%','約 45%','超過 50%'];
+const usageLabels   = ['幾乎沒穿','穿 1–3 次','穿 4–10 次','穿超過 10 次'];
+const wearLabels    = ['不到半年（高汰換率）','半年到 1 年','1 到 3 年','3 年以上（耐穿）'];
+const discardLabels = ['幾乎不丟（0 分）','丟了一些（+3 分）','丟了不少（+8 分）','大量丟棄（+15 分）'];
+
+// 消費行為洞察
+const behaviorInsights = {
+  q6: {
+    label:'購買主要考量',
+    insights:['以低價為優先，容易落入「便宜所以多買」的循環','外觀流行為主，快時尚品牌正是瞄準這個心理','品質導向的你，通常買得少但穿得久','關注品牌理念——這是改變產業的起點']
+  },
+  q7: {
+    label:'是否關心生產者',
+    insights:['對供應鏈完全陌生，和多數消費者一樣','偶爾會想，但還不是購買的主要考量','有一定的意識，繼續深化這個習慣','你是少數真正關心工人處境的消費者👏']
+  },
+  q8: {
+    label:'願意為永續付出',
+    insights:['完全不願多付，快時尚品牌最歡迎這種態度','願意象徵性多付，意識已在萌芽','願意多付 50–200 元，代表你認可永續的價值','「品質好就願意」——這才是真正的永續消費思維']
+  },
+  q9: {
+    label:'每月服裝支出',
+    insights:['幾乎不買——很環保，但也要確保現有衣物有在使用','月支出 500 以下，屬於理性消費','月支出 500–1500，相當於台灣平均水準','月支出超過 1500，衣物是生活重要支出項目']
+  },
+  q10: {
+    label:'購買前看標籤',
+    insights:['從不看標籤——你不知道身上的衣服從哪來','偶爾看，可以養成每次都看的習慣','常常看標籤，代表你對材質和來源有意識','每次都看——你是有知識的消費者，非常棒！']
+  },
+  q11: {
+    label:'最近購衣原因',
+    insights:['因為真的需要才買——這是最健康的消費動機','便宜忍不住，這是快時尚最常見的套路','好看就想要，衝動消費的典型模式','跟上流行——快時尚品牌正是靠這個維生']
+  }
 };
 
 const SECTION1_END = 5;
@@ -328,30 +455,26 @@ function startQuiz() {
   studentClass = document.getElementById('inputClass').value.trim();
   studentSeat  = document.getElementById('inputSeat').value.trim();
   studentName  = document.getElementById('inputName').value.trim();
-
   document.getElementById('screen-intro').style.display = 'none';
   document.getElementById('screen-quiz').style.display = 'block';
   renderStepDots();
   renderQuestion();
   startRespondentPoll();
-
-  // 同步確認目前題目（解決問題1：若老師已開放題目，學生重新進入時對齊）
   syncCurrentQuestion();
 }
 
-// ===== 同步目前題目 =====
 async function syncCurrentQuestion() {
   try {
     const res = await fetch(`${APPS_SCRIPT_URL}?type=status&session=${SESSION_ID}`);
     const data = await res.json();
     if (data.currentQuestion > currentQ) {
       currentQ = data.currentQuestion;
+      if (currentQ >= allQuestions.length) { showResult(); return; }
       renderQuestion();
     }
   } catch(e) {}
 }
 
-// ===== 進入第二關 =====
 function startSection2() {
   document.getElementById('screen-transition').style.display = 'none';
   document.getElementById('screen-quiz').style.display = 'block';
@@ -359,7 +482,6 @@ function startSection2() {
   renderQuestion();
 }
 
-// ===== 步驟點 =====
 function renderStepDots() {
   const q = allQuestions[currentQ];
   const isS1 = q.sectionIndex === 1;
@@ -373,12 +495,9 @@ function renderStepDots() {
   }).join('');
 }
 
-// ===== 渲染題目 =====
 function renderQuestion() {
   const q = allQuestions[currentQ];
-  selectedOption = null;
-  answered = false;
-
+  selectedOption = null; answered = false;
   const isS1 = q.sectionIndex === 1;
   const tag = document.getElementById('sectionTag');
   tag.textContent = isS1 ? '第一關' : '第二關';
@@ -386,32 +505,27 @@ function renderQuestion() {
   tag.style.borderColor = isS1 ? 'rgba(232,255,77,0.3)' : 'rgba(77,255,180,0.3)';
   tag.style.color = isS1 ? 'var(--accent)' : 'var(--accent3)';
   document.getElementById('sectionTitleText').textContent = q.section;
-
   document.getElementById('qNum').textContent = `Q${currentQ+1}`;
   document.getElementById('qNum').className = 'q-num' + (isS1 ? '' : ' blue');
   document.getElementById('qSectionLabel').textContent = q.section;
   document.getElementById('questionText').textContent = q.text;
   document.getElementById('progressBar').style.width = (currentQ/allQuestions.length*100)+'%';
-
   document.getElementById('optionsContainer').innerHTML = q.options.map((opt,i) => `
     <div class="option" id="opt${i}" onclick="selectOption(${i})">
       <div class="option-letter">${letters[i]}</div>
       <div class="option-text">${opt}</div>
     </div>`).join('');
-
   document.getElementById('waitingBlock').classList.remove('show');
   document.getElementById('btnSubmit').style.display = 'block';
   document.getElementById('btnSubmit').disabled = true;
   document.getElementById('btnSubmit').textContent = '確認送出 →';
   document.querySelectorAll('.option').forEach(el => el.style.pointerEvents = 'auto');
-
   const card = document.getElementById('questionCard');
   card.style.animation = 'none'; card.offsetHeight;
   card.style.animation = 'slideUp 0.4s cubic-bezier(0.4,0,0.2,1)';
   renderStepDots();
 }
 
-// ===== 選擇選項 =====
 function selectOption(index) {
   if(answered) return;
   selectedOption = index;
@@ -419,17 +533,13 @@ function selectOption(index) {
   document.getElementById('btnSubmit').disabled = false;
 }
 
-// ===== 送出答案 =====
 async function submitAnswer() {
   if(selectedOption===null || answered) return;
   answered = true;
-
   const q = allQuestions[currentQ];
   userAnswers[q.id] = selectedOption;
-
   document.getElementById('submitFeedback').classList.add('show');
   setTimeout(() => document.getElementById('submitFeedback').classList.remove('show'), 1400);
-
   try {
     await fetch(APPS_SCRIPT_URL, {
       method:'POST', mode:'no-cors',
@@ -443,7 +553,6 @@ async function submitAnswer() {
       })
     });
   } catch(e) {}
-
   setTimeout(() => {
     document.getElementById('waitingBlock').classList.add('show');
     document.getElementById('btnSubmit').style.display = 'none';
@@ -452,7 +561,6 @@ async function submitAnswer() {
   }, 1500);
 }
 
-// ===== 等待老師開放（問題1修正：縮短輪詢間隔至2秒，更靈敏）=====
 function startWaitingPoll() {
   if(pollInterval) clearInterval(pollInterval);
   pollInterval = setInterval(checkNextQuestion, 2000);
@@ -462,84 +570,203 @@ async function checkNextQuestion() {
   try {
     const res = await fetch(`${APPS_SCRIPT_URL}?type=status&session=${SESSION_ID}&t=${Date.now()}`);
     const data = await res.json();
-
     if (data.currentQuestion > currentQ) {
       clearInterval(pollInterval);
       const nextQ = data.currentQuestion;
-
-      // 超過題目總數 → 顯示結果
-      if (nextQ >= allQuestions.length) {
-        currentQ = nextQ;
-        showResult();
-        return;
-      }
-
-      // 剛完成第一關（Q5→Q6）→ 顯示過渡畫面
+      if (nextQ >= allQuestions.length) { currentQ = nextQ; showResult(); return; }
       if (currentQ === SECTION1_END - 1 && nextQ === SECTION1_END) {
-        currentQ = nextQ;
-        showTransition();
-        return;
+        currentQ = nextQ; showTransition(); return;
       }
-
-      currentQ = nextQ;
-      renderQuestion();
+      currentQ = nextQ; renderQuestion();
     }
   } catch(e) {}
 }
 
-// ===== 第一關過渡 =====
 function showTransition() {
   document.getElementById('screen-quiz').style.display = 'none';
   const t = document.getElementById('screen-transition');
-  t.style.display = 'block';
-  t.style.animation = 'none'; t.offsetHeight;
-  t.style.animation = 'slideUp 0.5s ease';
+  t.style.display = 'block'; t.style.animation = 'none';
+  t.offsetHeight; t.style.animation = 'slideUp 0.5s ease';
 }
 
-// ===== 計算指數 =====
+// ===== 計算指數（含細項） =====
 function calcIndex() {
-  const q1 = userAnswers['q1'] ?? 1;
-  const q2 = userAnswers['q2'] ?? 1;
-  const q3 = userAnswers['q3'] ?? 2;
-  const q4 = userAnswers['q4'] ?? 2;
-  const q5 = userAnswers['q5'] ?? 0;
-  const clothes = scoreMap.q1[q1];
-  const raw = (clothes * scoreMap.q2[q2] / scoreMap.q3[q3]) * scoreMap.q4[q4] + scoreMap.q5[q5];
-  return { score: Math.round(raw), clothes };
+  const q1i = userAnswers['q1'] ?? 1;
+  const q2i = userAnswers['q2'] ?? 1;
+  const q3i = userAnswers['q3'] ?? 2;
+  const q4i = userAnswers['q4'] ?? 2;
+  const q5i = userAnswers['q5'] ?? 0;
+
+  const clothes    = scoreMap.q1[q1i];   // 件數
+  const idleRatio  = scoreMap.q2[q2i];   // 閒置比例
+  const usageCount = scoreMap.q3[q3i];   // 穿著次數
+  const wearFactor = scoreMap.q4[q4i];   // 穿著時長係數
+  const discarded  = scoreMap.q5[q5i];   // 丟棄分
+
+  const idleClothes = Math.round(clothes * idleRatio);
+  const wearScore   = (clothes * idleRatio / usageCount) * wearFactor;
+  const rawScore    = wearScore + discarded;
+  const finalScore  = Math.round(rawScore);
+
+  return {
+    finalScore, clothes, idleRatio, idleClothes,
+    usageCount, wearFactor, discarded, wearScore,
+    q1i, q2i, q3i, q4i, q5i
+  };
 }
 
 // ===== 顯示結果 =====
 function showResult() {
   document.getElementById('screen-quiz').style.display = 'none';
+  document.getElementById('screen-transition').style.display = 'none';
   document.getElementById('progressBar').style.width = '100%';
   if(respondentPollInterval) clearInterval(respondentPollInterval);
+  if(pollInterval) clearInterval(pollInterval);
 
-  const {score, clothes} = calcIndex();
-  let level, emoji, title, desc;
-  if(score<=3){level=0;emoji='🌱';title='慢時尚實踐者';desc='你的衣服都有被<strong>好好使用</strong>，閒置比例低、穿著時間長。這樣的習慣已經在默默保護環境了。繼續保持！';}
-  else if(score<=8){level=1;emoji='🌀';title='快時尚入門用戶';desc='你有一些衣服<strong>還沒被充分使用</strong>。試著在買新衣服前，先翻翻衣櫃——說不定有被遺忘的寶貝。';}
-  else if(score<=15){level=2;emoji='⚠️';title='中度快時尚依賴';desc='你的衣櫃正在<strong>默默消耗地球資源</strong>。每件閒置的衣服背後，都有水、碳排放和勞工的代價在等著被看見。';}
-  else{level=3;emoji='🔥';title='快時尚重度用戶';desc='你的消費模式和快時尚品牌的<strong>設計目標完全吻合</strong>——買快、丟快、再買。這個循環正是時尚產業成為全球第二大污染源的原因。';}
+  const d = calcIndex();
+  const score = d.finalScore;
 
-  const waterLiters = clothes * 2700;
-  const waterTubs = Math.round(waterLiters / 90);
+  // 等級設定
+  let level, emoji, title, descShort;
+  if(score<=3){
+    level=0; emoji='🌱'; title='慢時尚實踐者';
+    descShort='你的衣物都有被好好使用，閒置比例低、穿著時間長。這樣的習慣正在默默保護環境。';
+  } else if(score<=8){
+    level=1; emoji='🌀'; title='快時尚入門用戶';
+    descShort='你有些衣服還沒被充分使用。買新衣前先翻翻衣櫃——說不定有被遺忘的寶貝。';
+  } else if(score<=15){
+    level=2; emoji='⚠️'; title='中度快時尚依賴';
+    descShort='你的衣櫃正在默默消耗地球資源。每件閒置的衣服背後，都有水、碳排放和勞工的代價。';
+  } else {
+    level=3; emoji='🔥'; title='快時尚重度用戶';
+    descShort='你的消費模式和快時尚品牌的設計目標完全吻合——買快、丟快、再買。這個循環是時尚業成為全球第二大污染源的原因。';
+  }
 
+  // 英雄區
   document.getElementById('resultEmoji').textContent = emoji;
   document.getElementById('resultIdentity').textContent = `${studentClass} ${studentSeat}號 ${studentName}`;
   document.getElementById('indexNumber').textContent = score;
+  document.getElementById('indexNumber').className = `score-num level-${level}`;
+  document.getElementById('scoreCircle').className = `score-circle level-${level}`;
   document.getElementById('resultTitle').textContent = title;
-  document.getElementById('resultTitle').className = `result-title level-${level}`;
-  document.getElementById('resultDesc').innerHTML = desc;
-  document.getElementById('resultCard').className = `result-card level-${level}`;
+  document.getElementById('resultTitle').className = `result-level-title level-${level}`;
+  document.getElementById('resultDesc').textContent = descShort;
+  document.getElementById('resultHero').className = `result-hero level-${level}`;
 
-  if(level>=2){
-    document.getElementById('waterNum').textContent = `${waterLiters.toLocaleString()} 公升（約 ${waterTubs} 個浴缸）`;
-    document.getElementById('waterAlert').classList.add('show');
-  }
+  // 計算分解
+  renderBreakdown(d, score);
 
+  // 環境影響
+  renderEnv(d.clothes);
+
+  // 消費行為快照
+  renderBehavior();
+
+  // 顯示
   const s = document.getElementById('screen-result');
-  s.style.display = 'block'; s.style.animation='none'; s.offsetHeight;
-  s.style.animation = 'slideUp 0.6s ease';
+  s.style.display = 'block'; s.style.animation='none';
+  s.offsetHeight; s.style.animation = 'slideUp 0.6s ease';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function renderBreakdown(d, finalScore) {
+  document.getElementById('totalScoreDisplay').textContent = finalScore;
+
+  // 衣物閒置分 (wearScore)
+  const ws = Math.round(d.wearScore * 10) / 10;
+  const ds = d.discarded;
+  const maxPossible = (70 * 0.6 / 0.5) * 2.0 + 15; // 最大可能分
+
+  const wsBarPct = Math.min(100, (ws / maxPossible) * 100);
+  const dsBarPct = Math.min(100, (ds / 15) * 100);
+
+  document.getElementById('breakdownSection').innerHTML = `
+    <!-- 衣物資料摘要 -->
+    <div style="background:var(--surface);border-radius:12px;padding:14px 16px;margin-bottom:14px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="text-align:center;padding:10px;background:var(--card);border-radius:10px;">
+          <div style="font-size:22px;font-weight:900;color:var(--accent)">${d.clothes}</div>
+          <div style="font-size:11px;color:var(--muted)">件衣服（估算）</div>
+        </div>
+        <div style="text-align:center;padding:10px;background:var(--card);border-radius:10px;">
+          <div style="font-size:22px;font-weight:900;color:#ff9f35">${d.idleClothes}</div>
+          <div style="font-size:11px;color:var(--muted)">件幾乎不穿</div>
+        </div>
+        <div style="text-align:center;padding:10px;background:var(--card);border-radius:10px;">
+          <div style="font-size:22px;font-weight:900;color:var(--accent3)">${Math.round(d.idleRatio*100)}%</div>
+          <div style="font-size:11px;color:var(--muted)">閒置比例</div>
+        </div>
+        <div style="text-align:center;padding:10px;background:var(--card);border-radius:10px;">
+          <div style="font-size:22px;font-weight:900;color:#a78bfa">${d.wearFactor}x</div>
+          <div style="font-size:11px;color:var(--muted)">穿著時長係數</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 兩部分分數 -->
+    <div class="score-breakdown-row">
+      <div>
+        <div class="sbd-label">🧺 衣物閒置分</div>
+        <div class="sbd-detail">${clothesLabels[d.q1i]}，閒置 ${idleLabels[d.q2i]}，${usageLabels[d.q3i]}，${wearLabels[d.q4i]}</div>
+        <div style="margin-top:8px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;">
+          <div style="height:100%;background:#e8ff4d;border-radius:4px;width:${wsBarPct}%;transition:width 1.2s ease;"></div>
+        </div>
+      </div>
+      <div class="sbd-val" style="color:var(--accent);margin-left:16px;">+${ws}</div>
+    </div>
+
+    <div class="score-breakdown-row">
+      <div>
+        <div class="sbd-label">🗑️ 丟棄習慣分</div>
+        <div class="sbd-detail">${discardLabels[d.q5i]}</div>
+        <div style="margin-top:8px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;">
+          <div style="height:100%;background:#ff6b35;border-radius:4px;width:${dsBarPct}%;transition:width 1.2s ease;"></div>
+        </div>
+      </div>
+      <div class="sbd-val" style="color:#ff9f35;margin-left:16px;">+${ds}</div>
+    </div>
+  `;
+}
+
+function renderEnv(clothes) {
+  const water = clothes * 2700;
+  const tubs = Math.round(water / 90);
+  const co2 = clothes * 5;
+  const trees = Math.round(co2 / 21);
+
+  document.getElementById('envGrid').innerHTML = `
+    <div class="env-item">
+      <div class="env-icon">💧</div>
+      <div class="env-val">${water.toLocaleString()}<span style="font-size:12px;"> 公升</span></div>
+      <div class="env-label">製造這些衣服消耗的水<br>約 <strong style="color:var(--text)">${tubs} 個浴缸</strong></div>
+    </div>
+    <div class="env-item">
+      <div class="env-icon">🌲</div>
+      <div class="env-val">${co2}<span style="font-size:12px;"> kg</span></div>
+      <div class="env-label">估算碳排放量<br>需要 <strong style="color:var(--text)">${trees} 棵樹</strong> 吸收一年</div>
+    </div>
+  `;
+}
+
+function renderBehavior() {
+  const qKeys = ['q6','q7','q8','q9','q10','q11'];
+  const qData = allQuestions.filter(q => qKeys.includes(q.id));
+
+  document.getElementById('behaviorSection').innerHTML = qData.map(q => {
+    const ansIdx = userAnswers[q.id];
+    if (ansIdx === undefined) return '';
+    const ansText = q.options[ansIdx];
+    const insight = behaviorInsights[q.id];
+    const insightText = insight?.insights[ansIdx] || '';
+    return `
+      <div class="behavior-item">
+        <span class="behavior-q">${q.id.toUpperCase()}</span>
+        <div>
+          <div class="behavior-text">${insight?.label}：<span class="behavior-answer">${ansText}</span></div>
+          <div class="behavior-insight">${insightText}</div>
+        </div>
+      </div>`;
+  }).join('');
 }
 
 // ===== 填答人數 =====
