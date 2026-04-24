@@ -29,22 +29,18 @@
     display:flex;align-items:center;gap:6px;}
   .dot{width:6px;height:6px;border-radius:50%;background:var(--accent3);animation:pulse 2s infinite;}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
-  @keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes slideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
   @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-  @keyframes countUp{from{opacity:0;transform:scale(0.5)}to{opacity:1;transform:scale(1)}}
-  @keyframes barGrow{from{width:0}to{width:var(--target-w)}}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  @keyframes popIn{from{opacity:0;transform:scale(0.85) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
 
-  /* ===== 開場 ===== */
-  #screen-intro{text-align:center;max-width:460px;animation:slideUp 0.6s ease;}
   .intro-emoji{font-size:60px;display:block;margin-bottom:20px;animation:float 3s ease-in-out infinite;}
   .intro-title{font-size:clamp(26px,7vw,38px);font-weight:900;line-height:1.2;margin-bottom:14px;}
   .intro-title span{color:var(--accent);}
   .intro-sub{font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:28px;}
-
-  /* ===== 身份填寫 ===== */
+  #screen-intro{text-align:center;max-width:460px;animation:slideUp 0.6s ease;}
   .identity-card{width:100%;max-width:460px;background:var(--card);
-    border:1px solid var(--border);border-radius:24px;padding:32px 28px;
-    margin-top:16px;animation:slideUp 0.5s ease;}
+    border:1px solid var(--border);border-radius:24px;padding:32px 28px;margin-top:16px;}
   .identity-title{font-size:14px;font-weight:700;color:var(--muted);
     letter-spacing:2px;margin-bottom:20px;text-align:center;}
   .field-group{display:flex;flex-direction:column;gap:12px;margin-bottom:24px;}
@@ -56,25 +52,19 @@
     font-family:'Noto Sans TC',sans-serif;outline:none;transition:border-color 0.2s;width:100%;}
   .field-input:focus{border-color:var(--accent);}
   .field-input::placeholder{color:var(--muted);}
-
-  /* ===== 共用按鈕 ===== */
   .btn-main{width:100%;padding:16px;background:var(--accent);color:#000;border:none;
     border-radius:14px;font-size:15px;font-weight:900;cursor:pointer;
     transition:all 0.2s;font-family:'Noto Sans TC',sans-serif;letter-spacing:1px;}
   .btn-main:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,255,77,0.3);}
-  .btn-main:disabled{background:var(--border);color:var(--muted);cursor:not-allowed;
-    transform:none;box-shadow:none;}
+  .btn-main:disabled{background:var(--border);color:var(--muted);cursor:not-allowed;transform:none;box-shadow:none;}
   .btn-green{background:var(--accent3);color:#000;}
   .btn-green:hover{box-shadow:0 8px 24px rgba(77,255,180,0.3);}
 
-  /* ===== 區段標題 ===== */
   .section-banner{width:100%;max-width:520px;text-align:center;margin-bottom:20px;}
   .section-tag{display:inline-block;background:rgba(232,255,77,0.12);
     border:1px solid rgba(232,255,77,0.3);color:var(--accent);font-size:11px;
     font-weight:700;letter-spacing:2px;padding:4px 14px;border-radius:20px;margin-bottom:8px;}
   .section-title-text{font-size:15px;color:var(--muted);}
-
-  /* ===== 題目卡片 ===== */
   .card{width:100%;max-width:520px;background:var(--card);border:1px solid var(--border);
     border-radius:24px;padding:36px 32px;position:relative;}
   .card-anim{animation:slideUp 0.4s cubic-bezier(0.4,0,0.2,1);}
@@ -83,21 +73,17 @@
     padding:3px 10px;border-radius:20px;letter-spacing:1px;}
   .q-num.blue{background:var(--accent3);}
   .q-section-label{color:var(--muted);font-size:11px;letter-spacing:1px;}
-  .question{font-size:clamp(18px,5vw,24px);font-weight:900;line-height:1.4;
-    margin-bottom:28px;color:var(--text);}
+  .question{font-size:clamp(18px,5vw,24px);font-weight:900;line-height:1.4;margin-bottom:28px;}
   .options{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
   .option{background:var(--surface);border:2px solid var(--border);border-radius:14px;
-    padding:14px 18px;cursor:pointer;display:flex;align-items:center;gap:12px;
-    transition:all 0.2s;}
+    padding:14px 18px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all 0.2s;}
   .option:hover{border-color:var(--accent);transform:translateX(3px);}
   .option.selected{border-color:var(--accent);background:rgba(232,255,77,0.07);}
   .option-letter{width:30px;height:30px;border-radius:8px;background:var(--border);
     display:flex;align-items:center;justify-content:center;font-weight:700;
     font-size:12px;color:var(--muted);flex-shrink:0;transition:all 0.2s;}
   .option.selected .option-letter{background:var(--accent);color:#000;}
-  .option-text{font-size:14px;font-weight:500;color:var(--text);}
-
-  /* ===== 等待 ===== */
+  .option-text{font-size:14px;font-weight:500;}
   .waiting-block{display:none;text-align:center;padding:16px 0 8px;}
   .waiting-block.show{display:block;}
   .waiting-icon{font-size:40px;margin-bottom:12px;animation:float 3s ease-in-out infinite;}
@@ -109,15 +95,11 @@
   .dots span:nth-child(2){animation-delay:0.2s;}
   .dots span:nth-child(3){animation-delay:0.4s;}
   @keyframes db{0%,80%,100%{transform:translateY(0);opacity:0.3}40%{transform:translateY(-6px);opacity:1}}
-
-  /* ===== 步驟點 ===== */
   .step-dots{display:flex;justify-content:center;gap:6px;margin-bottom:20px;}
   .step-dot{width:7px;height:7px;border-radius:50%;background:var(--border);transition:all 0.3s;}
   .step-dot.active{background:var(--accent);width:20px;border-radius:4px;}
   .step-dot.done{background:rgba(232,255,77,0.35);}
   .step-dot.active.blue{background:var(--accent3);}
-
-  /* ===== 送出反饋 ===== */
   .submit-feedback{position:fixed;inset:0;display:flex;align-items:center;
     justify-content:center;background:rgba(0,0,0,0.75);z-index:200;
     opacity:0;pointer-events:none;transition:opacity 0.3s;}
@@ -128,108 +110,115 @@
   .submit-feedback.show .sf-inner{transform:scale(1);}
   .sf-icon{font-size:36px;margin-bottom:10px;}
   .sf-text{font-weight:700;font-size:15px;color:var(--accent);}
-
-  /* ===== 過渡畫面 ===== */
   #screen-transition{display:none;text-align:center;max-width:460px;}
   .trans-emoji{font-size:52px;margin-bottom:16px;animation:float 3s ease-in-out infinite;}
   .trans-title{font-size:22px;font-weight:900;color:var(--accent);margin-bottom:10px;}
   .trans-sub{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:28px;}
 
-  /* ===== 結果頁 ===== */
-  #screen-result{display:none;width:100%;max-width:560px;padding-bottom:40px;}
+  /* ===== 等待報告頁 ===== */
+  #screen-result{display:none;width:100%;max-width:460px;text-align:center;}
+  .wr-emoji{font-size:56px;margin-bottom:16px;animation:float 3s ease-in-out infinite;}
+  .wr-title{font-size:20px;font-weight:900;color:var(--accent);margin-bottom:10px;}
+  .wr-sub{font-size:14px;color:var(--muted);line-height:1.8;}
 
-  .result-hero{text-align:center;padding:32px 28px 24px;
-    background:var(--card);border:1px solid var(--border);
-    border-radius:24px;margin-bottom:16px;position:relative;overflow:hidden;}
-  .result-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;}
-  .result-hero.level-0::before{background:linear-gradient(90deg,#4dffb4,#00cc88);}
-  .result-hero.level-1::before{background:linear-gradient(90deg,#e8ff4d,#ccdd00);}
-  .result-hero.level-2::before{background:linear-gradient(90deg,#ff9f35,#ff6b35);}
-  .result-hero.level-3::before{background:linear-gradient(90deg,#ff4444,#cc0000);}
-
-  .result-emoji-big{font-size:72px;display:block;margin-bottom:12px;
-    animation:float 3s ease-in-out infinite;}
-  .identity-tag{display:inline-flex;align-items:center;gap:8px;
-    background:var(--surface);border:1px solid var(--border);border-radius:20px;
-    padding:6px 16px;font-size:13px;margin-bottom:16px;}
-  .score-circle{width:140px;height:140px;border-radius:50%;
-    border:3px solid var(--border);margin:0 auto 16px;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    background:var(--surface);position:relative;}
-  .score-circle.level-0{border-color:#4dffb4;box-shadow:0 0 32px rgba(77,255,180,0.2);}
-  .score-circle.level-1{border-color:#e8ff4d;box-shadow:0 0 32px rgba(232,255,77,0.2);}
-  .score-circle.level-2{border-color:#ff9f35;box-shadow:0 0 32px rgba(255,159,53,0.2);}
-  .score-circle.level-3{border-color:#ff4444;box-shadow:0 0 32px rgba(255,68,68,0.2);}
-  .score-num{font-size:56px;font-weight:900;line-height:1;animation:countUp 0.6s cubic-bezier(0.4,0,0.2,1);}
-  .score-num.level-0{color:#4dffb4;}
-  .score-num.level-1{color:#e8ff4d;}
-  .score-num.level-2{color:#ff9f35;}
-  .score-num.level-3{color:#ff5555;}
-  .score-label{font-size:11px;color:var(--muted);margin-top:2px;}
-  .result-level-title{font-size:22px;font-weight:900;margin-bottom:8px;}
-  .result-level-title.level-0{color:#4dffb4;}
-  .result-level-title.level-1{color:#e8ff4d;}
-  .result-level-title.level-2{color:#ff9f35;}
-  .result-level-title.level-3{color:#ff5555;}
-  .result-desc-short{font-size:13px;color:var(--muted);line-height:1.7;
-    max-width:400px;margin:0 auto;}
-
-  /* ===== 區塊卡片 ===== */
-  .info-card{background:var(--card);border:1px solid var(--border);
-    border-radius:20px;padding:24px 24px;margin-bottom:16px;}
-  .info-card-title{font-size:11px;font-weight:700;letter-spacing:2px;
-    color:var(--muted);margin-bottom:18px;display:flex;align-items:center;gap:8px;}
-  .info-card-title span{font-size:16px;}
-
-  /* ===== 計算分解 ===== */
-  .calc-formula{background:var(--surface);border-radius:12px;padding:14px 16px;
-    margin-bottom:16px;font-size:12px;color:var(--muted);line-height:2;}
-  .calc-formula strong{color:var(--accent);}
-  .calc-formula .eq{color:var(--text);}
-
-  .breakdown-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
-  .breakdown-icon{font-size:20px;width:32px;text-align:center;flex-shrink:0;}
-  .breakdown-info{flex:1;}
-  .breakdown-label{font-size:12px;color:var(--muted);margin-bottom:4px;}
-  .breakdown-bar-wrap{height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
-  .breakdown-bar{height:100%;border-radius:4px;transition:width 1s cubic-bezier(0.4,0,0.2,1);}
-  .breakdown-val{font-size:14px;font-weight:700;color:var(--text);
-    white-space:nowrap;flex-shrink:0;min-width:36px;text-align:right;}
-
-  .score-breakdown-row{display:flex;justify-content:space-between;align-items:center;
-    padding:10px 0;border-bottom:1px solid var(--border);}
-  .score-breakdown-row:last-child{border-bottom:none;}
-  .sbd-label{font-size:13px;color:var(--muted);}
-  .sbd-val{font-size:15px;font-weight:900;}
-  .sbd-detail{font-size:11px;color:var(--muted);margin-top:2px;}
-  .total-score-row{display:flex;justify-content:space-between;align-items:center;
-    padding:12px 16px;background:var(--surface);border-radius:10px;margin-top:12px;}
-  .total-label{font-size:13px;font-weight:700;}
-  .total-val{font-size:22px;font-weight:900;color:var(--accent);}
-
-  /* ===== 環境影響 ===== */
-  .env-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-  .env-item{background:var(--surface);border-radius:14px;padding:16px 14px;text-align:center;}
-  .env-icon{font-size:28px;margin-bottom:6px;}
-  .env-val{font-size:20px;font-weight:900;color:var(--accent2);margin-bottom:4px;}
-  .env-label{font-size:11px;color:var(--muted);line-height:1.4;}
-
-  /* ===== 消費行為快照 ===== */
-  .behavior-item{display:flex;align-items:flex-start;gap:12px;
-    padding:10px 0;border-bottom:1px solid var(--border);}
-  .behavior-item:last-child{border-bottom:none;}
-  .behavior-q{font-size:10px;font-weight:700;background:rgba(77,255,180,0.12);
-    color:var(--accent3);padding:2px 8px;border-radius:10px;white-space:nowrap;
-    flex-shrink:0;margin-top:2px;}
-  .behavior-text{font-size:13px;color:var(--text);line-height:1.5;}
-  .behavior-answer{font-weight:700;color:var(--accent3);}
-  .behavior-insight{font-size:11px;color:var(--muted);margin-top:3px;}
-
-  /* ===== 等待提示 ===== */
-  .done-card{background:var(--card);border:1px solid var(--border);
-    border-radius:20px;padding:24px;text-align:center;}
-  .done-hint{font-size:13px;color:var(--muted);line-height:1.8;}
-  .done-hint strong{color:var(--accent);}
+  /* ===== 個人報告浮層 ===== */
+  #report-overlay{
+    position:fixed;inset:0;
+    background:rgba(5,5,12,0.96);
+    z-index:999;
+    display:none;
+    align-items:flex-start;
+    justify-content:center;
+    overflow-y:auto;
+    padding:20px 16px 60px;
+    -webkit-overflow-scrolling:touch;
+  }
+  #report-overlay.show{display:flex;animation:fadeIn 0.35s ease;}
+  #report-card{
+    width:100%;max-width:540px;
+    background:var(--card);
+    border-radius:28px;
+    overflow:hidden;
+    border:1px solid var(--border);
+    animation:popIn 0.55s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes popIn{
+    from{opacity:0;transform:scale(0.85) translateY(24px)}
+    to{opacity:1;transform:scale(1) translateY(0)}
+  }
+  .rpt-topbar{height:5px;width:100%;}
+  .rpt-topbar.l0{background:linear-gradient(90deg,#4dffb4,#00e87a);}
+  .rpt-topbar.l1{background:linear-gradient(90deg,#e8ff4d,#c8e000);}
+  .rpt-topbar.l2{background:linear-gradient(90deg,#ff9f35,#ff5500);}
+  .rpt-topbar.l3{background:linear-gradient(90deg,#ff4444,#cc0000);}
+  .rpt-header{
+    padding:18px 24px 14px;
+    border-bottom:1px solid var(--border);
+    display:flex;justify-content:space-between;align-items:flex-start;
+  }
+  .rpt-header-title{font-size:13px;font-weight:900;letter-spacing:1.5px;color:var(--muted);margin-bottom:4px;}
+  .rpt-header-sub{font-size:12px;color:var(--muted);}
+  .rpt-header-sub strong{color:var(--text);}
+  .rpt-badge{
+    text-align:center;padding:28px 24px 24px;
+    border-bottom:1px solid var(--border);
+    animation:slideUp 0.5s 0.1s both;
+  }
+  .rpt-emoji{font-size:64px;display:block;margin-bottom:10px;animation:float 3s ease-in-out infinite;}
+  .rpt-grade-tag{display:inline-block;font-size:11px;font-weight:700;
+    letter-spacing:3px;color:var(--muted);margin-bottom:8px;}
+  .rpt-level-name{font-size:26px;font-weight:900;margin-bottom:16px;}
+  .rpt-level-name.l0{color:#4dffb4;}
+  .rpt-level-name.l1{color:#e8ff4d;}
+  .rpt-level-name.l2{color:#ff9f35;}
+  .rpt-level-name.l3{color:#ff5555;}
+  .rpt-score-pill{
+    display:inline-flex;align-items:baseline;gap:5px;
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:50px;padding:10px 22px;
+  }
+  .rpt-score-num{font-size:38px;font-weight:900;}
+  .rpt-score-unit{font-size:12px;color:var(--muted);}
+  .rpt-section{padding:20px 24px;border-bottom:1px solid var(--border);}
+  .rpt-section-label{
+    font-size:10px;font-weight:700;letter-spacing:2px;
+    color:var(--muted);margin-bottom:16px;
+    display:flex;align-items:center;gap:6px;
+  }
+  .dim-row{margin-bottom:14px;}
+  .dim-row:last-child{margin-bottom:0;}
+  .dim-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .dim-label{font-size:13px;font-weight:700;}
+  .dim-val{font-size:15px;font-weight:900;}
+  .dim-bar-bg{height:10px;background:var(--border);border-radius:5px;overflow:hidden;}
+  .dim-bar{height:100%;border-radius:5px;width:0;transition:width 1.4s cubic-bezier(0.4,0,0.2,1);}
+  .dim-desc{font-size:11px;color:var(--muted);margin-top:4px;}
+  .finding-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+  .finding-item:last-child{border-bottom:none;}
+  .finding-icon{font-size:22px;width:30px;text-align:center;flex-shrink:0;margin-top:1px;}
+  .finding-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+  .finding-detail{font-size:12px;color:var(--muted);line-height:1.65;}
+  .rpt-env-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .env-cell{background:var(--surface);border-radius:14px;padding:16px 12px;text-align:center;}
+  .env-icon{font-size:26px;margin-bottom:6px;}
+  .env-val{font-size:19px;font-weight:900;margin-bottom:4px;}
+  .env-label{font-size:11px;color:var(--muted);line-height:1.5;}
+  .env-label strong{color:var(--text);}
+  .rpt-action{padding:20px 24px;border-bottom:1px solid var(--border);}
+  .rpt-action-label{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);margin-bottom:10px;}
+  .rpt-action-quote{
+    background:var(--surface);border-left:3px solid var(--accent);
+    border-radius:0 12px 12px 0;padding:14px 16px;
+    font-size:14px;font-weight:700;color:var(--text);line-height:1.6;
+  }
+  .rpt-close-btn{
+    display:block;width:100%;padding:18px;
+    background:var(--accent);color:#000;border:none;
+    font-size:15px;font-weight:900;cursor:pointer;
+    font-family:'Noto Sans TC',sans-serif;letter-spacing:1px;
+    transition:background 0.2s;
+  }
+  .rpt-close-btn:hover{background:#f2ff60;}
 </style>
 </head>
 <body>
@@ -241,7 +230,6 @@
     <span id="respondentCount">0</span> 人填答中
   </div>
 </div>
-
 <div class="submit-feedback" id="submitFeedback">
   <div class="sf-inner">
     <div class="sf-icon">✅</div>
@@ -249,12 +237,11 @@
   </div>
 </div>
 
-<!-- ===== 開場 ===== -->
+<!-- 開場 -->
 <div id="screen-intro">
   <span class="intro-emoji">👕</span>
   <h1 class="intro-title">你的衣櫃，<br><span>比你想的更貴</span></h1>
-  <p class="intro-sub">先填寫你的資料<br>再開始 11 題快時尚健檢</p>
-
+  <p class="intro-sub">先填寫你的資料，再開始 11 題快時尚健檢</p>
   <div class="identity-card">
     <div class="identity-title">填寫身份資料</div>
     <div class="field-group">
@@ -277,9 +264,9 @@
   </div>
 </div>
 
-<!-- ===== 題目區 ===== -->
+<!-- 題目區 -->
 <div id="screen-quiz" style="display:none;width:100%;max-width:520px;">
-  <div class="section-banner" id="sectionBanner">
+  <div class="section-banner">
     <div class="section-tag" id="sectionTag">第一關</div>
     <div class="section-title-text" id="sectionTitleText">衣櫃健檢</div>
   </div>
@@ -301,7 +288,7 @@
   </div>
 </div>
 
-<!-- ===== 第一關完成過渡 ===== -->
+<!-- 過渡 -->
 <div id="screen-transition">
   <div class="trans-emoji">🎯</div>
   <div class="trans-title">衣櫃健檢完成！</div>
@@ -309,80 +296,72 @@
   <button class="btn-main btn-green" onclick="startSection2()">繼續第二關 →</button>
 </div>
 
-<!-- ===== 指數結果 ===== -->
+<!-- 等待老師公布 -->
 <div id="screen-result">
+  <div class="wr-emoji">📋</div>
+  <div class="wr-title">測驗完成！</div>
+  <div class="wr-sub">
+    你的答案已記錄完畢<br>
+    等老師公布，個人報告即將出現
+    <div class="dots" style="display:inline-flex;margin-top:12px;"><span></span><span></span><span></span></div>
+  </div>
+</div>
 
-  <!-- 英雄區：分數 + 等級 -->
-  <div class="result-hero" id="resultHero">
-    <span class="result-emoji-big" id="resultEmoji">🌱</span>
-    <div class="identity-tag" id="resultIdentity">—</div>
-    <div class="score-circle" id="scoreCircle">
-      <span class="score-num" id="indexNumber">0</span>
-      <span class="score-label">快時尚指數</span>
+<!-- 個人報告浮層 -->
+<div id="report-overlay">
+  <div id="report-card">
+    <div class="rpt-topbar" id="rptTopbar"></div>
+    <div class="rpt-header">
+      <div>
+        <div class="rpt-header-title">👕 &nbsp;快時尚健康檢測報告</div>
+        <div class="rpt-header-sub" id="rptMeta">—</div>
+      </div>
     </div>
-    <div class="result-level-title" id="resultTitle">慢時尚實踐者</div>
-    <div class="result-desc-short" id="resultDesc"></div>
-  </div>
-
-  <!-- 指數計算說明 -->
-  <div class="info-card">
-    <div class="info-card-title"><span>🧮</span> 你的指數怎麼來的？</div>
-
-    <div class="calc-formula" id="calcFormula">
-      指數 ＝ （衣服數量 × 閒置比例 ÷ 平均穿次）× 穿著時長係數 ＋ 丟棄分
+    <div class="rpt-badge">
+      <span class="rpt-emoji" id="rptEmoji">🌀</span>
+      <div class="rpt-grade-tag" id="rptGrade">B 級</div>
+      <div class="rpt-level-name" id="rptLevelName">快時尚入門用戶</div>
+      <div class="rpt-score-pill">
+        <span class="rpt-score-num" id="rptScoreNum">0</span>
+        <span class="rpt-score-unit">快時尚指數</span>
+      </div>
     </div>
-
-    <div id="breakdownSection"></div>
-
-    <div class="total-score-row">
-      <div class="total-label">快時尚指數</div>
-      <div class="total-val" id="totalScoreDisplay">0</div>
+    <div class="rpt-section">
+      <div class="rpt-section-label"><span>📊</span> 三維度分析</div>
+      <div id="rptDims"></div>
     </div>
-  </div>
-
-  <!-- 環境影響 -->
-  <div class="info-card" id="envCard">
-    <div class="info-card-title"><span>🌍</span> 你的衣物代價</div>
-    <div class="env-grid" id="envGrid"></div>
-  </div>
-
-  <!-- 消費行為快照 -->
-  <div class="info-card">
-    <div class="info-card-title"><span>🛍️</span> 你的消費行為快照</div>
-    <div id="behaviorSection"></div>
-  </div>
-
-  <!-- 等待老師 -->
-  <div class="done-card">
-    <div style="font-size:36px;margin-bottom:10px;">👀</div>
-    <div class="done-hint">
-      你的答案已加入統計囉！<br>
-      等老師帶著全班一起看結果<br>
-      <strong>記得比較看看你和同學的差異</strong>
+    <div class="rpt-section">
+      <div class="rpt-section-label"><span>🔍</span> 你的三大發現</div>
+      <div id="rptFindings"></div>
     </div>
+    <div class="rpt-section">
+      <div class="rpt-section-label"><span>🌍</span> 你的衣物代價</div>
+      <div class="rpt-env-grid" id="rptEnv"></div>
+    </div>
+    <div class="rpt-action">
+      <div class="rpt-action-label">💡 &nbsp;給你的一個行動</div>
+      <div class="rpt-action-quote" id="rptAction">—</div>
+    </div>
+    <button class="rpt-close-btn" onclick="closeReport()">我知道了 ✓</button>
   </div>
-
 </div>
 
 <script>
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzjrobTSm4fptBQl4Ie4HtfDPu3KLugyjn5qGfWJ2HrjEf_rY1_Vh4cbcM44ljrJIlr/exec';
-const urlParams = new URLSearchParams(window.location.search);
-const SESSION_ID = urlParams.get('session') || 'default';
+const APPS_SCRIPT_URL='https://script.google.com/macros/s/AKfycbzjrobTSm4fptBQl4Ie4HtfDPu3KLugyjn5qGfWJ2HrjEf_rY1_Vh4cbcM44ljrJIlr/exec';
+const urlParams=new URLSearchParams(window.location.search);
+const SESSION_ID=urlParams.get('session')||'default';
+let studentClass='',studentSeat='',studentName='';
 
-let studentClass = '', studentSeat = '', studentName = '';
-
-['inputClass','inputSeat','inputName'].forEach(id => {
-  document.getElementById(id).addEventListener('input', checkIdentityFilled);
+['inputClass','inputSeat','inputName'].forEach(id=>{
+  document.getElementById(id).addEventListener('input',()=>{
+    const c=document.getElementById('inputClass').value.trim();
+    const s=document.getElementById('inputSeat').value.trim();
+    const n=document.getElementById('inputName').value.trim();
+    document.getElementById('btnStart').disabled=!(c&&s&&n);
+  });
 });
-function checkIdentityFilled() {
-  const c = document.getElementById('inputClass').value.trim();
-  const s = document.getElementById('inputSeat').value.trim();
-  const n = document.getElementById('inputName').value.trim();
-  document.getElementById('btnStart').disabled = !(c && s && n);
-}
 
-// ===== 題目資料 =====
-const allQuestions = [
+const allQuestions=[
   {id:'q1',section:'衣櫃健檢',sectionIndex:1,text:'你衣櫃裡大概有幾件衣服？',options:['20件以下','21–40件','41–60件','60件以上']},
   {id:'q2',section:'衣櫃健檢',sectionIndex:1,text:'這些衣服裡，幾乎不穿的佔幾成？',options:['不到1成','約2–3成','約4–5成','超過一半']},
   {id:'q3',section:'衣櫃健檢',sectionIndex:1,text:'上一件買的衣服，你穿了幾次？',options:['還沒穿','1–3次','4–10次','超過10次']},
@@ -396,388 +375,313 @@ const allQuestions = [
   {id:'q11',section:'消費行為',sectionIndex:2,text:'你最近買的衣服，主要是因為什麼？',options:['真的需要','便宜忍不住','好看想要','跟上流行']}
 ];
 
-// 計分對照
-const scoreMap = {
-  q1:[15,30,50,70],
-  q2:[0.1,0.25,0.45,0.6],
-  q3:[0.5,2,7,15],
-  q4:[2.0,1.5,1.0,0.5],
-  q5:[0,3,8,15]
-};
+const scoreMap={q1:[15,30,50,70],q2:[0.1,0.25,0.45,0.6],q3:[0.5,2,7,15],q4:[2.0,1.5,1.0,0.5],q5:[0,3,8,15]};
+const SECTION1_END=5;
+let currentQ=0,selectedOption=null,answered=false;
+let pollInterval=null,respondentPollInterval=null,reportPollInterval=null;
+const letters=['A','B','C','D'];
+const studentId='S_'+Date.now()+'_'+Math.random().toString(36).substr(2,6);
+const userAnswers={};
 
-// Q1 閒置件數文字
-const clothesLabels = ['約 15 件','約 30 件','約 50 件','約 70 件'];
-const idleLabels    = ['約 10%','約 25%','約 45%','超過 50%'];
-const usageLabels   = ['幾乎沒穿','穿 1–3 次','穿 4–10 次','穿超過 10 次'];
-const wearLabels    = ['不到半年（高汰換率）','半年到 1 年','1 到 3 年','3 年以上（耐穿）'];
-const discardLabels = ['幾乎不丟（0 分）','丟了一些（+3 分）','丟了不少（+8 分）','大量丟棄（+15 分）'];
-
-// 消費行為洞察
-const behaviorInsights = {
-  q6: {
-    label:'購買主要考量',
-    insights:['以低價為優先，容易落入「便宜所以多買」的循環','外觀流行為主，快時尚品牌正是瞄準這個心理','品質導向的你，通常買得少但穿得久','關注品牌理念——這是改變產業的起點']
-  },
-  q7: {
-    label:'是否關心生產者',
-    insights:['對供應鏈完全陌生，和多數消費者一樣','偶爾會想，但還不是購買的主要考量','有一定的意識，繼續深化這個習慣','你是少數真正關心工人處境的消費者👏']
-  },
-  q8: {
-    label:'願意為永續付出',
-    insights:['完全不願多付，快時尚品牌最歡迎這種態度','願意象徵性多付，意識已在萌芽','願意多付 50–200 元，代表你認可永續的價值','「品質好就願意」——這才是真正的永續消費思維']
-  },
-  q9: {
-    label:'每月服裝支出',
-    insights:['幾乎不買——很環保，但也要確保現有衣物有在使用','月支出 500 以下，屬於理性消費','月支出 500–1500，相當於台灣平均水準','月支出超過 1500，衣物是生活重要支出項目']
-  },
-  q10: {
-    label:'購買前看標籤',
-    insights:['從不看標籤——你不知道身上的衣服從哪來','偶爾看，可以養成每次都看的習慣','常常看標籤，代表你對材質和來源有意識','每次都看——你是有知識的消費者，非常棒！']
-  },
-  q11: {
-    label:'最近購衣原因',
-    insights:['因為真的需要才買——這是最健康的消費動機','便宜忍不住，這是快時尚最常見的套路','好看就想要，衝動消費的典型模式','跟上流行——快時尚品牌正是靠這個維生']
-  }
-};
-
-const SECTION1_END = 5;
-let currentQ = 0;
-let selectedOption = null;
-let answered = false;
-let pollInterval = null;
-let respondentPollInterval = null;
-const letters = ['A','B','C','D'];
-const studentId = 'S_' + Date.now() + '_' + Math.random().toString(36).substr(2,6);
-const userAnswers = {};
-
-// ===== 開始 =====
-function startQuiz() {
-  studentClass = document.getElementById('inputClass').value.trim();
-  studentSeat  = document.getElementById('inputSeat').value.trim();
-  studentName  = document.getElementById('inputName').value.trim();
-  document.getElementById('screen-intro').style.display = 'none';
-  document.getElementById('screen-quiz').style.display = 'block';
-  renderStepDots();
-  renderQuestion();
-  startRespondentPoll();
-  syncCurrentQuestion();
+function startQuiz(){
+  studentClass=document.getElementById('inputClass').value.trim();
+  studentSeat=document.getElementById('inputSeat').value.trim();
+  studentName=document.getElementById('inputName').value.trim();
+  document.getElementById('screen-intro').style.display='none';
+  document.getElementById('screen-quiz').style.display='block';
+  renderStepDots();renderQuestion();
+  startRespondentPoll();syncCurrentQuestion();
 }
 
-async function syncCurrentQuestion() {
-  try {
-    const res = await fetch(`${APPS_SCRIPT_URL}?type=status&session=${SESSION_ID}`);
-    const data = await res.json();
-    if (data.currentQuestion > currentQ) {
-      currentQ = data.currentQuestion;
-      if (currentQ >= allQuestions.length) { showResult(); return; }
-      renderQuestion();
-    }
-  } catch(e) {}
+async function syncCurrentQuestion(){
+  try{
+    const res=await fetch(`${APPS_SCRIPT_URL}?type=status&session=${SESSION_ID}`);
+    const data=await res.json();
+    if(data.currentQuestion>=99){showResult();setTimeout(showReportOverlay,500);return;}
+    if(data.currentQuestion>currentQ){currentQ=data.currentQuestion;renderQuestion();}
+  }catch(e){}
 }
 
-function startSection2() {
-  document.getElementById('screen-transition').style.display = 'none';
-  document.getElementById('screen-quiz').style.display = 'block';
-  renderStepDots();
-  renderQuestion();
+function startSection2(){
+  document.getElementById('screen-transition').style.display='none';
+  document.getElementById('screen-quiz').style.display='block';
+  renderStepDots();renderQuestion();
 }
 
-function renderStepDots() {
-  const q = allQuestions[currentQ];
-  const isS1 = q.sectionIndex === 1;
-  const sectionQs = allQuestions.filter(x => x.sectionIndex === q.sectionIndex);
-  const localIdx = isS1 ? currentQ : currentQ - SECTION1_END;
-  document.getElementById('stepDots').innerHTML = sectionQs.map((_,i) => {
-    let c = 'step-dot';
-    if(i===localIdx) c += isS1 ? ' active' : ' active blue';
-    else if(i<localIdx) c += ' done';
+function renderStepDots(){
+  const q=allQuestions[Math.min(currentQ,allQuestions.length-1)];
+  const isS1=q.sectionIndex===1;
+  const sectionQs=allQuestions.filter(x=>x.sectionIndex===q.sectionIndex);
+  const localIdx=isS1?currentQ:currentQ-SECTION1_END;
+  document.getElementById('stepDots').innerHTML=sectionQs.map((_,i)=>{
+    let c='step-dot';
+    if(i===localIdx)c+=isS1?' active':' active blue';
+    else if(i<localIdx)c+=' done';
     return `<div class="${c}"></div>`;
   }).join('');
 }
 
-function renderQuestion() {
-  const q = allQuestions[currentQ];
-  selectedOption = null; answered = false;
-  const isS1 = q.sectionIndex === 1;
-  const tag = document.getElementById('sectionTag');
-  tag.textContent = isS1 ? '第一關' : '第二關';
-  tag.style.background = isS1 ? 'rgba(232,255,77,0.12)' : 'rgba(77,255,180,0.12)';
-  tag.style.borderColor = isS1 ? 'rgba(232,255,77,0.3)' : 'rgba(77,255,180,0.3)';
-  tag.style.color = isS1 ? 'var(--accent)' : 'var(--accent3)';
-  document.getElementById('sectionTitleText').textContent = q.section;
-  document.getElementById('qNum').textContent = `Q${currentQ+1}`;
-  document.getElementById('qNum').className = 'q-num' + (isS1 ? '' : ' blue');
-  document.getElementById('qSectionLabel').textContent = q.section;
-  document.getElementById('questionText').textContent = q.text;
-  document.getElementById('progressBar').style.width = (currentQ/allQuestions.length*100)+'%';
-  document.getElementById('optionsContainer').innerHTML = q.options.map((opt,i) => `
+function renderQuestion(){
+  if(currentQ>=allQuestions.length){showResult();return;}
+  const q=allQuestions[currentQ];
+  selectedOption=null;answered=false;
+  const isS1=q.sectionIndex===1;
+  const tag=document.getElementById('sectionTag');
+  tag.textContent=isS1?'第一關':'第二關';
+  tag.style.background=isS1?'rgba(232,255,77,0.12)':'rgba(77,255,180,0.12)';
+  tag.style.borderColor=isS1?'rgba(232,255,77,0.3)':'rgba(77,255,180,0.3)';
+  tag.style.color=isS1?'var(--accent)':'var(--accent3)';
+  document.getElementById('sectionTitleText').textContent=q.section;
+  document.getElementById('qNum').textContent=`Q${currentQ+1}`;
+  document.getElementById('qNum').className='q-num'+(isS1?'':' blue');
+  document.getElementById('qSectionLabel').textContent=q.section;
+  document.getElementById('questionText').textContent=q.text;
+  document.getElementById('progressBar').style.width=(currentQ/allQuestions.length*100)+'%';
+  document.getElementById('optionsContainer').innerHTML=q.options.map((opt,i)=>`
     <div class="option" id="opt${i}" onclick="selectOption(${i})">
       <div class="option-letter">${letters[i]}</div>
       <div class="option-text">${opt}</div>
     </div>`).join('');
   document.getElementById('waitingBlock').classList.remove('show');
-  document.getElementById('btnSubmit').style.display = 'block';
-  document.getElementById('btnSubmit').disabled = true;
-  document.getElementById('btnSubmit').textContent = '確認送出 →';
-  document.querySelectorAll('.option').forEach(el => el.style.pointerEvents = 'auto');
-  const card = document.getElementById('questionCard');
-  card.style.animation = 'none'; card.offsetHeight;
-  card.style.animation = 'slideUp 0.4s cubic-bezier(0.4,0,0.2,1)';
+  document.getElementById('btnSubmit').style.display='block';
+  document.getElementById('btnSubmit').disabled=true;
+  document.getElementById('btnSubmit').textContent='確認送出 →';
+  document.querySelectorAll('.option').forEach(el=>el.style.pointerEvents='auto');
+  const card=document.getElementById('questionCard');
+  card.style.animation='none';card.offsetHeight;
+  card.style.animation='slideUp 0.4s cubic-bezier(0.4,0,0.2,1)';
   renderStepDots();
 }
 
-function selectOption(index) {
-  if(answered) return;
-  selectedOption = index;
-  document.querySelectorAll('.option').forEach((el,i) => el.classList.toggle('selected', i===index));
-  document.getElementById('btnSubmit').disabled = false;
+function selectOption(index){
+  if(answered)return;
+  selectedOption=index;
+  document.querySelectorAll('.option').forEach((el,i)=>el.classList.toggle('selected',i===index));
+  document.getElementById('btnSubmit').disabled=false;
 }
 
-async function submitAnswer() {
-  if(selectedOption===null || answered) return;
-  answered = true;
-  const q = allQuestions[currentQ];
-  userAnswers[q.id] = selectedOption;
+async function submitAnswer(){
+  if(selectedOption===null||answered)return;
+  answered=true;
+  const q=allQuestions[currentQ];
+  userAnswers[q.id]=selectedOption;
   document.getElementById('submitFeedback').classList.add('show');
-  setTimeout(() => document.getElementById('submitFeedback').classList.remove('show'), 1400);
-  try {
-    await fetch(APPS_SCRIPT_URL, {
-      method:'POST', mode:'no-cors',
+  setTimeout(()=>document.getElementById('submitFeedback').classList.remove('show'),1400);
+  try{
+    await fetch(APPS_SCRIPT_URL,{
+      method:'POST',mode:'no-cors',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        type:'answer', studentId, session:SESSION_ID,
-        studentClass, studentSeat, studentName,
-        questionId:q.id, questionIndex:currentQ,
-        answer:q.options[selectedOption], answerIndex:selectedOption,
+      body:JSON.stringify({
+        type:'answer',studentId,session:SESSION_ID,
+        studentClass,studentSeat,studentName,
+        questionId:q.id,questionIndex:currentQ,
+        answer:q.options[selectedOption],answerIndex:selectedOption,
         timestamp:new Date().toISOString()
       })
     });
-  } catch(e) {}
-  setTimeout(() => {
+  }catch(e){}
+  setTimeout(()=>{
     document.getElementById('waitingBlock').classList.add('show');
-    document.getElementById('btnSubmit').style.display = 'none';
-    document.querySelectorAll('.option').forEach(el => el.style.pointerEvents='none');
+    document.getElementById('btnSubmit').style.display='none';
+    document.querySelectorAll('.option').forEach(el=>el.style.pointerEvents='none');
     startWaitingPoll();
-  }, 1500);
+  },1500);
 }
 
-function startWaitingPoll() {
-  if(pollInterval) clearInterval(pollInterval);
-  pollInterval = setInterval(checkNextQuestion, 2000);
+function startWaitingPoll(){
+  if(pollInterval)clearInterval(pollInterval);
+  pollInterval=setInterval(checkNextQuestion,2000);
 }
 
-async function checkNextQuestion() {
-  try {
-    const res = await fetch(`${APPS_SCRIPT_URL}?type=status&session=${SESSION_ID}&t=${Date.now()}`);
-    const data = await res.json();
-    if (data.currentQuestion > currentQ) {
+async function checkNextQuestion(){
+  try{
+    const res=await fetch(`${APPS_SCRIPT_URL}?type=status&session=${SESSION_ID}&t=${Date.now()}`);
+    const data=await res.json();
+    const serverQ=data.currentQuestion;
+    if(serverQ>currentQ){
       clearInterval(pollInterval);
-      const nextQ = data.currentQuestion;
-      if (nextQ >= allQuestions.length) { currentQ = nextQ; showResult(); return; }
-      if (currentQ === SECTION1_END - 1 && nextQ === SECTION1_END) {
-        currentQ = nextQ; showTransition(); return;
-      }
-      currentQ = nextQ; renderQuestion();
+      if(serverQ>=99){currentQ=serverQ;showResult();setTimeout(showReportOverlay,500);return;}
+      if(serverQ>=allQuestions.length){currentQ=serverQ;showResult();return;}
+      if(currentQ===SECTION1_END-1&&serverQ===SECTION1_END){currentQ=serverQ;showTransition();return;}
+      currentQ=serverQ;renderQuestion();
     }
-  } catch(e) {}
+  }catch(e){}
 }
 
-function showTransition() {
-  document.getElementById('screen-quiz').style.display = 'none';
-  const t = document.getElementById('screen-transition');
-  t.style.display = 'block'; t.style.animation = 'none';
-  t.offsetHeight; t.style.animation = 'slideUp 0.5s ease';
+function showTransition(){
+  document.getElementById('screen-quiz').style.display='none';
+  const t=document.getElementById('screen-transition');
+  t.style.display='block';t.style.animation='none';
+  t.offsetHeight;t.style.animation='slideUp 0.5s ease';
 }
 
-// ===== 計算指數（含細項） =====
-function calcIndex() {
-  const q1i = userAnswers['q1'] ?? 1;
-  const q2i = userAnswers['q2'] ?? 1;
-  const q3i = userAnswers['q3'] ?? 2;
-  const q4i = userAnswers['q4'] ?? 2;
-  const q5i = userAnswers['q5'] ?? 0;
-
-  const clothes    = scoreMap.q1[q1i];   // 件數
-  const idleRatio  = scoreMap.q2[q2i];   // 閒置比例
-  const usageCount = scoreMap.q3[q3i];   // 穿著次數
-  const wearFactor = scoreMap.q4[q4i];   // 穿著時長係數
-  const discarded  = scoreMap.q5[q5i];   // 丟棄分
-
-  const idleClothes = Math.round(clothes * idleRatio);
-  const wearScore   = (clothes * idleRatio / usageCount) * wearFactor;
-  const rawScore    = wearScore + discarded;
-  const finalScore  = Math.round(rawScore);
-
-  return {
-    finalScore, clothes, idleRatio, idleClothes,
-    usageCount, wearFactor, discarded, wearScore,
-    q1i, q2i, q3i, q4i, q5i
-  };
+function showResult(){
+  document.getElementById('screen-quiz').style.display='none';
+  document.getElementById('screen-transition').style.display='none';
+  document.getElementById('progressBar').style.width='100%';
+  if(respondentPollInterval)clearInterval(respondentPollInterval);
+  if(pollInterval)clearInterval(pollInterval);
+  const s=document.getElementById('screen-result');
+  s.style.display='block';s.style.animation='none';
+  s.offsetHeight;s.style.animation='slideUp 0.6s ease';
+  startReportPoll();
 }
 
-// ===== 顯示結果 =====
-function showResult() {
-  document.getElementById('screen-quiz').style.display = 'none';
-  document.getElementById('screen-transition').style.display = 'none';
-  document.getElementById('progressBar').style.width = '100%';
-  if(respondentPollInterval) clearInterval(respondentPollInterval);
-  if(pollInterval) clearInterval(pollInterval);
-
-  const d = calcIndex();
-  const score = d.finalScore;
-
-  // 等級設定
-  let level, emoji, title, descShort;
-  if(score<=3){
-    level=0; emoji='🌱'; title='慢時尚實踐者';
-    descShort='你的衣物都有被好好使用，閒置比例低、穿著時間長。這樣的習慣正在默默保護環境。';
-  } else if(score<=8){
-    level=1; emoji='🌀'; title='快時尚入門用戶';
-    descShort='你有些衣服還沒被充分使用。買新衣前先翻翻衣櫃——說不定有被遺忘的寶貝。';
-  } else if(score<=15){
-    level=2; emoji='⚠️'; title='中度快時尚依賴';
-    descShort='你的衣櫃正在默默消耗地球資源。每件閒置的衣服背後，都有水、碳排放和勞工的代價。';
-  } else {
-    level=3; emoji='🔥'; title='快時尚重度用戶';
-    descShort='你的消費模式和快時尚品牌的設計目標完全吻合——買快、丟快、再買。這個循環是時尚業成為全球第二大污染源的原因。';
-  }
-
-  // 英雄區
-  document.getElementById('resultEmoji').textContent = emoji;
-  document.getElementById('resultIdentity').textContent = `${studentClass} ${studentSeat}號 ${studentName}`;
-  document.getElementById('indexNumber').textContent = score;
-  document.getElementById('indexNumber').className = `score-num level-${level}`;
-  document.getElementById('scoreCircle').className = `score-circle level-${level}`;
-  document.getElementById('resultTitle').textContent = title;
-  document.getElementById('resultTitle').className = `result-level-title level-${level}`;
-  document.getElementById('resultDesc').textContent = descShort;
-  document.getElementById('resultHero').className = `result-hero level-${level}`;
-
-  // 計算分解
-  renderBreakdown(d, score);
-
-  // 環境影響
-  renderEnv(d.clothes);
-
-  // 消費行為快照
-  renderBehavior();
-
-  // 顯示
-  const s = document.getElementById('screen-result');
-  s.style.display = 'block'; s.style.animation='none';
-  s.offsetHeight; s.style.animation = 'slideUp 0.6s ease';
-  window.scrollTo({top:0, behavior:'smooth'});
+function startReportPoll(){
+  if(reportPollInterval)clearInterval(reportPollInterval);
+  reportPollInterval=setInterval(async()=>{
+    try{
+      const res=await fetch(`${APPS_SCRIPT_URL}?type=status&session=${SESSION_ID}&t=${Date.now()}`);
+      const data=await res.json();
+      if(data.currentQuestion>=99){
+        clearInterval(reportPollInterval);
+        showReportOverlay();
+      }
+    }catch(e){}
+  },2000);
 }
 
-function renderBreakdown(d, finalScore) {
-  document.getElementById('totalScoreDisplay').textContent = finalScore;
+// ===== 計算 =====
+function calcIndex(){
+  const q1i=userAnswers['q1']??1,q2i=userAnswers['q2']??1;
+  const q3i=userAnswers['q3']??2,q4i=userAnswers['q4']??2,q5i=userAnswers['q5']??0;
+  const clothes=scoreMap.q1[q1i];
+  const raw=(clothes*scoreMap.q2[q2i]/scoreMap.q3[q3i])*scoreMap.q4[q4i]+scoreMap.q5[q5i];
+  return{finalScore:Math.round(raw),clothes,q1i,q2i,q3i,q4i,q5i};
+}
 
-  // 衣物閒置分 (wearScore)
-  const ws = Math.round(d.wearScore * 10) / 10;
-  const ds = d.discarded;
-  const maxPossible = (70 * 0.6 / 0.5) * 2.0 + 15; // 最大可能分
+function calcDimensions(){
+  const q1i=userAnswers['q1']??1,q2i=userAnswers['q2']??1;
+  const q3i=userAnswers['q3']??2,q4i=userAnswers['q4']??2;
+  const q5i=userAnswers['q5']??0,q6i=userAnswers['q6']??0;
+  const q7i=userAnswers['q7']??0,q8i=userAnswers['q8']??0;
+  const q9i=userAnswers['q9']??0,q10i=userAnswers['q10']??0,q11i=userAnswers['q11']??0;
+  const efficiency=Math.round(([100,75,40,15][q1i]+[100,70,35,10][q2i]+[5,30,70,100][q3i]+[10,40,75,100][q4i])/4);
+  const selfControl=Math.round(([100,65,30,5][q5i]+[100,75,40,10][q9i]+[100,15,35,20][q11i])/3);
+  const sustainability=Math.round(([25,15,65,100][q6i]+[5,35,75,100][q7i]+[5,25,65,100][q8i]+[5,35,75,100][q10i])/4);
+  return{efficiency,selfControl,sustainability};
+}
 
-  const wsBarPct = Math.min(100, (ws / maxPossible) * 100);
-  const dsBarPct = Math.min(100, (ds / 15) * 100);
+function getFindings(){
+  const q1i=userAnswers['q1']??1,q2i=userAnswers['q2']??1,q11i=userAnswers['q11']??0;
+  const q7i=userAnswers['q7']??0,q10i=userAnswers['q10']??0;
+  const clothes=[15,30,50,70][q1i];
+  const idlePct=[10,25,45,60][q2i];
+  const idleCount=Math.round(clothes*idlePct/100);
+  const f1=q2i>=2
+    ?{icon:'🧺',title:`衣櫃約 ${idlePct}% 幾乎不穿`,detail:`估算有 ${idleCount} 件衣服正在閒置，每件都消耗了水和碳才製造出來`}
+    :{icon:'✅',title:'衣物閒置比例偏低',detail:'你的衣服大多都有在穿，使用效率比多數人高'};
+  const awarAvg=(q7i+q10i)/2;
+  const f2=awarAvg<1
+    ?{icon:'👁️',title:'對供應鏈幾乎無感知',detail:'幾乎不會想到衣服的產地和生產者——這是最普遍的消費盲點'}
+    :awarAvg<2
+    ?{icon:'👁️',title:'永續意識正在萌芽',detail:'偶爾注意標籤和生產者，距離有意識的消費只差一步'}
+    :{icon:'👁️',title:'具備供應鏈意識',detail:'比多數人更在意衣服的來源，這很珍貴'};
+  const f3=[
+    {icon:'💚',title:'購衣動機以需求為主',detail:'你通常等到真正需要才買，是理性消費的好習慣'},
+    {icon:'⚡',title:'容易被低價觸發消費',detail:'「便宜忍不住」正是快時尚品牌最想要你有的心理'},
+    {icon:'👀',title:'外觀是主要購衣驅動力',detail:'視覺衝動驅動的消費，是衣櫃爆滿最常見的原因'},
+    {icon:'📱',title:'跟上流行是購衣主因',detail:'快時尚品牌靠 2–3 週換季，讓你永遠覺得衣服「過時了」'}
+  ][q11i];
+  return[f1,f2,f3];
+}
 
-  document.getElementById('breakdownSection').innerHTML = `
-    <!-- 衣物資料摘要 -->
-    <div style="background:var(--surface);border-radius:12px;padding:14px 16px;margin-bottom:14px;">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-        <div style="text-align:center;padding:10px;background:var(--card);border-radius:10px;">
-          <div style="font-size:22px;font-weight:900;color:var(--accent)">${d.clothes}</div>
-          <div style="font-size:11px;color:var(--muted)">件衣服（估算）</div>
-        </div>
-        <div style="text-align:center;padding:10px;background:var(--card);border-radius:10px;">
-          <div style="font-size:22px;font-weight:900;color:#ff9f35">${d.idleClothes}</div>
-          <div style="font-size:11px;color:var(--muted)">件幾乎不穿</div>
-        </div>
-        <div style="text-align:center;padding:10px;background:var(--card);border-radius:10px;">
-          <div style="font-size:22px;font-weight:900;color:var(--accent3)">${Math.round(d.idleRatio*100)}%</div>
-          <div style="font-size:11px;color:var(--muted)">閒置比例</div>
-        </div>
-        <div style="text-align:center;padding:10px;background:var(--card);border-radius:10px;">
-          <div style="font-size:22px;font-weight:900;color:#a78bfa">${d.wearFactor}x</div>
-          <div style="font-size:11px;color:var(--muted)">穿著時長係數</div>
-        </div>
+function getAction(level){
+  return['繼續保持！試著記錄每件衣服的穿著次數，讓好習慣更有意識。',
+    '下次想買衣服前，先拍下衣櫃問自己：「我真的需要嗎？」',
+    '挑戰自己：這個月只買一件品質好的衣服，暫停快時尚。',
+    '從今天起，每次購衣前等待 48 小時再決定——衝動會消退的。'][level];
+}
+
+// ===== 顯示報告 =====
+function showReportOverlay(){
+  const d=calcIndex();
+  const dims=calcDimensions();
+  const findings=getFindings();
+  const score=d.finalScore;
+  let level,emoji,grade,levelName;
+  if(score<=3){level=0;emoji='🌱';grade='S 級';levelName='慢時尚實踐者';}
+  else if(score<=8){level=1;emoji='🌀';grade='B 級';levelName='快時尚入門用戶';}
+  else if(score<=15){level=2;emoji='⚠️';grade='C 級';levelName='中度快時尚依賴';}
+  else{level=3;emoji='🔥';grade='D 級';levelName='快時尚重度用戶';}
+  const colors=['#4dffb4','#e8ff4d','#ff9f35','#ff5555'];
+  const now=new Date();
+  const dateStr=`${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')}`;
+
+  document.getElementById('rptTopbar').className=`rpt-topbar l${level}`;
+  document.getElementById('rptMeta').innerHTML=`<strong>${studentClass}班 ${studentSeat}號 ${studentName}</strong>　${dateStr}`;
+  document.getElementById('rptEmoji').textContent=emoji;
+  document.getElementById('rptGrade').textContent=grade;
+  document.getElementById('rptLevelName').textContent=levelName;
+  document.getElementById('rptLevelName').className=`rpt-level-name l${level}`;
+  document.getElementById('rptScoreNum').textContent=score;
+  document.getElementById('rptScoreNum').style.color=colors[level];
+
+  const dimData=[
+    {label:'衣物使用效率',val:dims.efficiency,color:'#4dffb4',desc:'買少・閒置低・穿多・穿久'},
+    {label:'消費自制力',val:dims.selfControl,color:'#e8ff4d',desc:'丟少・消費理性・為需求而買'},
+    {label:'永續意識',val:dims.sustainability,color:'#a78bfa',desc:'關注來源・願意為永續多付出'}
+  ];
+  document.getElementById('rptDims').innerHTML=dimData.map(d=>`
+    <div class="dim-row">
+      <div class="dim-top">
+        <span class="dim-label">${d.label}</span>
+        <span class="dim-val" style="color:${d.color}">${d.val}</span>
       </div>
-    </div>
+      <div class="dim-bar-bg">
+        <div class="dim-bar" data-val="${d.val}" style="background:${d.color}"></div>
+      </div>
+      <div class="dim-desc">${d.desc}</div>
+    </div>`).join('');
 
-    <!-- 兩部分分數 -->
-    <div class="score-breakdown-row">
+  document.getElementById('rptFindings').innerHTML=findings.map((f,i)=>`
+    <div class="finding-item" style="animation-delay:${i*0.08}s">
+      <span class="finding-icon">${f.icon}</span>
       <div>
-        <div class="sbd-label">🧺 衣物閒置分</div>
-        <div class="sbd-detail">${clothesLabels[d.q1i]}，閒置 ${idleLabels[d.q2i]}，${usageLabels[d.q3i]}，${wearLabels[d.q4i]}</div>
-        <div style="margin-top:8px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;">
-          <div style="height:100%;background:#e8ff4d;border-radius:4px;width:${wsBarPct}%;transition:width 1.2s ease;"></div>
-        </div>
+        <div class="finding-title">${f.title}</div>
+        <div class="finding-detail">${f.detail}</div>
       </div>
-      <div class="sbd-val" style="color:var(--accent);margin-left:16px;">+${ws}</div>
-    </div>
+    </div>`).join('');
 
-    <div class="score-breakdown-row">
-      <div>
-        <div class="sbd-label">🗑️ 丟棄習慣分</div>
-        <div class="sbd-detail">${discardLabels[d.q5i]}</div>
-        <div style="margin-top:8px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;">
-          <div style="height:100%;background:#ff6b35;border-radius:4px;width:${dsBarPct}%;transition:width 1.2s ease;"></div>
-        </div>
-      </div>
-      <div class="sbd-val" style="color:#ff9f35;margin-left:16px;">+${ds}</div>
-    </div>
-  `;
-}
-
-function renderEnv(clothes) {
-  const water = clothes * 2700;
-  const tubs = Math.round(water / 90);
-  const co2 = clothes * 5;
-  const trees = Math.round(co2 / 21);
-
-  document.getElementById('envGrid').innerHTML = `
-    <div class="env-item">
+  const water=d.clothes*2700;
+  const tubs=Math.round(water/90);
+  const trees=Math.round(d.clothes*5/21);
+  document.getElementById('rptEnv').innerHTML=`
+    <div class="env-cell">
       <div class="env-icon">💧</div>
-      <div class="env-val">${water.toLocaleString()}<span style="font-size:12px;"> 公升</span></div>
-      <div class="env-label">製造這些衣服消耗的水<br>約 <strong style="color:var(--text)">${tubs} 個浴缸</strong></div>
+      <div class="env-val" style="color:#4d9fff">${water.toLocaleString()}<span style="font-size:11px"> 公升</span></div>
+      <div class="env-label">製造耗水<br>約 <strong>${tubs} 個浴缸</strong></div>
     </div>
-    <div class="env-item">
+    <div class="env-cell">
       <div class="env-icon">🌲</div>
-      <div class="env-val">${co2}<span style="font-size:12px;"> kg</span></div>
-      <div class="env-label">估算碳排放量<br>需要 <strong style="color:var(--text)">${trees} 棵樹</strong> 吸收一年</div>
-    </div>
-  `;
+      <div class="env-val" style="color:#4dffb4">${trees}<span style="font-size:11px"> 棵</span></div>
+      <div class="env-label">需要這些樹<br><strong>一整年</strong>才能吸收碳排</div>
+    </div>`;
+
+  document.getElementById('rptAction').textContent=getAction(level);
+
+  const overlay=document.getElementById('report-overlay');
+  overlay.classList.add('show');
+  overlay.scrollTop=0;
+  setTimeout(()=>{
+    document.querySelectorAll('.dim-bar').forEach((bar,i)=>{
+      setTimeout(()=>{bar.style.width=bar.getAttribute('data-val')+'%';},i*220);
+    });
+  },400);
 }
 
-function renderBehavior() {
-  const qKeys = ['q6','q7','q8','q9','q10','q11'];
-  const qData = allQuestions.filter(q => qKeys.includes(q.id));
-
-  document.getElementById('behaviorSection').innerHTML = qData.map(q => {
-    const ansIdx = userAnswers[q.id];
-    if (ansIdx === undefined) return '';
-    const ansText = q.options[ansIdx];
-    const insight = behaviorInsights[q.id];
-    const insightText = insight?.insights[ansIdx] || '';
-    return `
-      <div class="behavior-item">
-        <span class="behavior-q">${q.id.toUpperCase()}</span>
-        <div>
-          <div class="behavior-text">${insight?.label}：<span class="behavior-answer">${ansText}</span></div>
-          <div class="behavior-insight">${insightText}</div>
-        </div>
-      </div>`;
-  }).join('');
+function closeReport(){
+  document.getElementById('report-overlay').classList.remove('show');
 }
 
-// ===== 填答人數 =====
-function startRespondentPoll() {
-  respondentPollInterval = setInterval(async () => {
-    try {
-      const res = await fetch(`${APPS_SCRIPT_URL}?type=respondents&session=${SESSION_ID}`);
-      const data = await res.json();
-      document.getElementById('respondentCount').textContent = data.count || 0;
-    } catch(e) {}
-  }, 5000);
+function startRespondentPoll(){
+  respondentPollInterval=setInterval(async()=>{
+    try{
+      const res=await fetch(`${APPS_SCRIPT_URL}?type=respondents&session=${SESSION_ID}`);
+      const data=await res.json();
+      document.getElementById('respondentCount').textContent=data.count||0;
+    }catch(e){}
+  },5000);
 }
 </script>
 </body>
