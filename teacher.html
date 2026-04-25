@@ -243,6 +243,25 @@
 
 <script>
 const APPS_SCRIPT_URL='https://script.google.com/macros/s/AKfycbzjrobTSm4fptBQl4Ie4HtfDPu3KLugyjn5qGfWJ2HrjEf_rY1_Vh4cbcM44ljrJIlr/exec';
+
+// ★ 設定你的 GitHub Pages 網址（結尾不要加斜線）
+// 例如：'https://yourname.github.io/your-repo'
+// 設定後，QR Code 就會自動產生正確的學生連結
+const BASE_URL = 'https://chunhui0531.github.io/fashion-quiz';   // ← 填入你的 GitHub Pages 網址
+// 取得學生端完整網址
+function getStudentUrl(session) {
+  let base = BASE_URL.trim();
+  if (!base) {
+    // 若 BASE_URL 未設定，嘗試從目前網址推算
+    const loc = window.location.href;
+    if (loc.startsWith('file://')) {
+      // 本機開啟：BASE_URL 必須手動設定
+      return null;
+    }
+    base = loc.substring(0, loc.lastIndexOf('/'));
+  }
+  return `${base}/student.html?session=${session}`;
+}
 let currentSession=localStorage.getItem('currentSession')||null;
 let pendingSession=null;
 
@@ -275,8 +294,26 @@ async function confirmNewSession(){
 }
 function showQRModal(){
   if(!currentSession)return;
-  const baseUrl=window.location.href.replace('teacher.html','student.html');
-  const studentUrl=`${baseUrl}?session=${currentSession}`;
+  const studentUrl=getStudentUrl(currentSession);
+
+  // 偵測到本機 file:// 且 BASE_URL 未設定
+  if(!studentUrl){
+    const input=prompt(
+      '⚠️ 偵測到本機開啟（file://）\n\n請貼上你的 GitHub Pages 網址：\n例如 https://yourname.github.io/your-repo',
+      localStorage.getItem('gh_base_url')||''
+    );
+    if(input&&input.trim()){
+      localStorage.setItem('gh_base_url',input.trim());
+      // 暫時覆蓋 BASE_URL 本次使用
+      const url=input.trim().replace(/\/$/,'')+`/student.html?session=${currentSession}`;
+      renderQRModal(url);
+    }
+    return;
+  }
+  renderQRModal(studentUrl);
+}
+
+function renderQRModal(studentUrl){
   const qrApiUrl=`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(studentUrl)}`;
   document.getElementById('qrImage').src=qrApiUrl;
   document.getElementById('qrSessionLabel').textContent=`場次：${currentSession}`;
@@ -288,11 +325,16 @@ function updateSessionUI(){
   document.getElementById('sessionDisplay').textContent=currentSession;
   document.getElementById('sessionBadge').style.display='flex';
   document.getElementById('footerSession').textContent=currentSession;
-  const baseUrl=window.location.href.replace('teacher.html','student.html');
-  const studentUrl=`${baseUrl}?session=${currentSession}`;
-  document.getElementById('footerQR').innerHTML=
-    `學生端：<a href="${studentUrl}" target="_blank" style="color:var(--accent3);">${studentUrl}</a>
-     &nbsp;｜&nbsp;<a href="#" onclick="showQRModal();return false;" style="color:var(--accent);">顯示 QR Code</a>`;
+  const studentUrl=getStudentUrl(currentSession);
+  if(studentUrl){
+    document.getElementById('footerQR').innerHTML=
+      `學生端：<a href="${studentUrl}" target="_blank" style="color:var(--accent3);">${studentUrl}</a>
+       &nbsp;｜&nbsp;<a href="#" onclick="showQRModal();return false;" style="color:var(--accent);">顯示 QR Code</a>`;
+  }else{
+    document.getElementById('footerQR').innerHTML=
+      `<span style="color:#ff9f35;">⚠️ 本機模式：請先設定 BASE_URL 或點</span>
+       &nbsp;<a href="#" onclick="showQRModal();return false;" style="color:var(--accent);">顯示 QR Code</a> 輸入網址`;
+  }
 }
 
 /* ── 公布 Modal ── */
